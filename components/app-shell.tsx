@@ -82,6 +82,7 @@ const NAV_SECONDARY = [
   { href: '/goals', label: 'Goals', icon: Flag },
   { href: '/horeca', label: 'HORECA', icon: UtensilsCrossed },
   { href: '/horeca/prospects', label: 'Licensee Universe', icon: Compass },
+  { href: '/sweep', label: 'GTHA Street Sweep', icon: Compass },
   { href: '/prospect', label: 'Find New Accounts', icon: Compass },
   { href: '/reps', label: 'Reps', icon: ArrowDownUp },
 ];

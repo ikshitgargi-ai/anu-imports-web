@@ -667,6 +667,31 @@ export const api = {
   reconcile: (days = 7) => request<ReconcilePayload>(`/api/reconcile?days=${days}`),
   exportCanonListingsXlsxUrl: () => `${API_BASE}/api/export/listings.xlsx`,
 
+  // ===== GTHA sweep — OSM street harvest + enrichment =====
+  sweepStatus: () => request<SweepStatusPayload>('/api/horeca/sweep/status'),
+  sweepPlan: () => request<{ status: string; tiles_total: number; tiles_added: number }>(
+    '/api/horeca/sweep/plan', { method: 'POST', body: JSON.stringify({}) }),
+  sweepRun: (tiles = 6) => request<SweepRunPayload>(
+    '/api/horeca/sweep/run', { method: 'POST', body: JSON.stringify({ tiles }) }),
+  sweepEnrich: () => request<SweepEnrichPayload>(
+    '/api/horeca/enrich', { method: 'POST', body: JSON.stringify({}) }),
+  sweepEnrichTorontoPhones: () => request<SweepTorontoPayload>(
+    '/api/horeca/enrich/toronto-phones', { method: 'POST', body: JSON.stringify({}) }),
+  venues: (params: { q?: string; city?: string; region?: string; kind?: string;
+    licensed?: boolean; has_phone?: boolean; limit?: number; offset?: number } = {}) => {
+    const qs = new URLSearchParams();
+    if (params.q) qs.set('q', params.q);
+    if (params.city) qs.set('city', params.city);
+    if (params.region) qs.set('region', params.region);
+    if (params.kind) qs.set('kind', params.kind);
+    if (params.licensed) qs.set('licensed', '1');
+    if (params.has_phone) qs.set('has_phone', '1');
+    if (params.limit) qs.set('limit', String(params.limit));
+    if (params.offset) qs.set('offset', String(params.offset));
+    const s = qs.toString();
+    return request<VenuesPayload>(`/api/horeca/venues${s ? `?${s}` : ''}`);
+  },
+
   // ===== Route planner =====
   cities: () => request<{ city: string; store_count: number }[]>('/api/crm/cities'),
   routePlanner: (params: {
@@ -3157,4 +3182,63 @@ export interface ReconcilePayload {
   days?: number;
   rows: ReconcileRow[];
   summary?: Record<string, number>;
+}
+
+// ===== GTHA sweep payloads =====
+export interface SweepStatusPayload {
+  tiles: Record<string, number>;
+  tiles_total: number;
+  tiles_done: number;
+  venues_total: number;
+  venues_matched_to_licence: number;
+  licensees_enriched: number;
+  bbox: number[];
+}
+export interface SweepRunPayload {
+  status: string;
+  tiles_swept_this_run: number;
+  venues_seen_this_run: number;
+  venues_total: number;
+  tiles: Record<string, number>;
+  pending: number;
+}
+export interface SweepEnrichPayload {
+  status: string;
+  osm_venues: number;
+  licensees_matched: number;
+  licensees_enriched: number;
+  book_accounts_enriched: number;
+}
+export interface SweepTorontoPayload {
+  status: string;
+  rows_scanned: number;
+  food_licences_with_phone: number;
+  licensees_phone_enriched: number;
+  osm_venues_phone_enriched: number;
+  book_accounts_phone_enriched: number;
+  source: string;
+}
+export interface VenueRow {
+  osm_id: string;
+  name: string;
+  kind: string;
+  address: string;
+  city: string;
+  postal: string;
+  lat: number;
+  lng: number;
+  phone: string;
+  website: string;
+  cuisine: string;
+  region: string;
+  licensed: boolean;
+  matched_licence: string;
+  google_maps_url: string;
+  yelp_url: string;
+}
+export interface VenuesPayload {
+  count: number;
+  rows: VenueRow[];
+  limit: number;
+  offset: number;
 }

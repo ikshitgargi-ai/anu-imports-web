@@ -662,6 +662,11 @@ export const api = {
       method: 'PUT', body: JSON.stringify(body),
     }),
 
+  // ===== Canonical listing ledger + 3-source reconcile =====
+  canonListings: () => request<CanonListingsPayload>('/api/listings'),
+  reconcile: (days = 7) => request<ReconcilePayload>(`/api/reconcile?days=${days}`),
+  exportCanonListingsXlsxUrl: () => `${API_BASE}/api/export/listings.xlsx`,
+
   // ===== Route planner =====
   cities: () => request<{ city: string; store_count: number }[]>('/api/crm/cities'),
   routePlanner: (params: {
@@ -3110,4 +3115,46 @@ export interface HorecaPortfolioPayload {
     listing: string;
     story: string;
   }[];
+}
+
+// ===== Canonical listing ledger + reconcile (cross-verified: SOD / lcbo.com / rep) =====
+export interface CanonListingRow {
+  sku: string;
+  brand: string;
+  product_name: string;
+  store_number: number;
+  account: string | null;
+  city: string | null;
+  status: string;
+  first_listed_date: string | null;
+  last_confirmed_date: string | null;
+  sources_seen: string;
+  days_since_confirmed: number | null;
+}
+export interface CanonListingsPayload {
+  rows: CanonListingRow[];
+  summary?: Record<string, unknown>;
+  as_of?: string;
+}
+export interface ReconcileRow {
+  sku: string;
+  brand: string;
+  product_name: string;
+  store_number: number;
+  account?: string | null;
+  city?: string | null;
+  sod_on_hand: number | null;
+  sod_status?: string | null;
+  sod_snapshot_date?: string | null;
+  live_qty: number | null;
+  live_checked_at?: string | null;
+  rep_outcome?: string | null;
+  rep_observed_at?: string | null;
+  flag: string;
+}
+export interface ReconcilePayload {
+  mode?: string;
+  days?: number;
+  rows: ReconcileRow[];
+  summary?: Record<string, number>;
 }

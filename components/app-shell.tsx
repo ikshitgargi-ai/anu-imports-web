@@ -55,6 +55,8 @@ const NAV = [
   { href: '/log', label: 'Log Visit', icon: Plus },
   { href: '/me', label: 'My Dashboard', icon: Trophy },
   { href: '/new-listings', label: 'New Listings (date range)', icon: TrendingUp },
+  { href: '/ledger', label: 'Listings (canonical)', icon: TrendingUp },
+  { href: '/reconcile', label: 'Reconcile (SOD/live/rep)', icon: TrendingUp },
   { href: '/tastings', label: 'Tastings (Book + Calendar)', icon: Calendar },
   { href: '/follow-ups', label: 'Tasting Follow-ups', icon: AlertTriangle },
   { href: '/pipeline', label: 'Pipeline', icon: Target },

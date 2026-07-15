@@ -613,6 +613,55 @@ export const api = {
       body: JSON.stringify(body),
     }),
 
+  // ===== HORECA CRM v2 — the licensee universe + full account pages =====
+  horecaProspects: (params: {
+    q?: string; city?: string; region?: string; kind?: string;
+    independent?: boolean; unmatched?: boolean; limit?: number; offset?: number;
+  } = {}) => {
+    const qs = new URLSearchParams();
+    if (params.q) qs.set('q', params.q);
+    if (params.city) qs.set('city', params.city);
+    if (params.region) qs.set('region', params.region);
+    if (params.kind) qs.set('kind', params.kind);
+    if (params.independent) qs.set('independent', '1');
+    if (params.unmatched) qs.set('unmatched', '1');
+    if (params.limit) qs.set('limit', String(params.limit));
+    if (params.offset) qs.set('offset', String(params.offset));
+    const s = qs.toString();
+    return request<HorecaProspectsPayload>(`/api/horeca/prospects${s ? `?${s}` : ''}`);
+  },
+  horecaAgcoSync: () =>
+    request<HorecaAgcoSyncPayload>('/api/horeca/agco/sync', {
+      method: 'POST', body: JSON.stringify({}),
+    }),
+  horecaAccountFull: (id: number) =>
+    request<HorecaAccountFullPayload>(`/api/horeca/account/${id}`),
+  horecaOrder: (body: {
+    account_id: number; sku: string; cases?: number; units?: number;
+    lcbo_store_number?: number; rep?: string; notes?: string;
+  }) => request<{ status: string }>('/api/horeca/order', {
+    method: 'POST', body: JSON.stringify(body),
+  }),
+  horecaLogActivity: (body: {
+    account_id: number; rep?: string; activity_type?: string; notes?: string;
+  }) => request<{ status: string }>('/api/horeca/activity', {
+    method: 'POST', body: JSON.stringify(body),
+  }),
+  horecaReorderDue: (days = 14) =>
+    request<HorecaReorderDuePayload>(`/api/horeca/reorder-due?days=${days}`),
+  horecaMenuRequests: () =>
+    request<HorecaMenuRequestsPayload>('/api/horeca/menu-requests'),
+  horecaPortfolio: () =>
+    request<HorecaPortfolioPayload>('/api/horeca/portfolio'),
+  horecaCreate: (body: Record<string, unknown>) =>
+    request<{ id?: number; status?: string }>('/api/crm/horeca', {
+      method: 'POST', body: JSON.stringify(body),
+    }),
+  horecaUpdate: (id: number, body: Record<string, unknown>) =>
+    request<{ status?: string }>(`/api/crm/horeca/${id}`, {
+      method: 'PUT', body: JSON.stringify(body),
+    }),
+
   // ===== Route planner =====
   cities: () => request<{ city: string; store_count: number }[]>('/api/crm/cities'),
   routePlanner: (params: {
@@ -2939,4 +2988,126 @@ export interface ReportCompare {
     string,
     { a: number; b: number; abs_change: number; pct_change: number | null }
   >;
+}
+
+// ===== HORECA CRM v2 payloads =====
+export interface HorecaProspectRow {
+  licence_number: string;
+  name: string;
+  address: string;
+  city: string;
+  postal: string;
+  licence_type: string;
+  status: string;
+  region: string;
+  kind: string;
+  locations: number;
+  is_independent: boolean;
+  matched_account_id: number | null;
+  google_maps_url: string;
+  yelp_url: string;
+}
+export interface HorecaProspectsPayload {
+  count: number;
+  rows: HorecaProspectRow[];
+  limit: number;
+  offset: number;
+}
+export interface HorecaAgcoSyncPayload {
+  status: string;
+  total_active: number;
+  inserted: number;
+  updated: number;
+  matched_to_book: number;
+  independents: number;
+  by_region: Record<string, number>;
+}
+export interface HorecaOrderRow {
+  id: number;
+  sku: string;
+  cases: number;
+  units: number;
+  lcbo_store_number: number | null;
+  licence_sale_no: string;
+  rep: string;
+  notes: string;
+  at: string;
+}
+export interface HorecaActivityRow {
+  id: number;
+  rep: string;
+  activity_type: string;
+  notes: string;
+  at: string;
+}
+export interface HorecaAccountFull {
+  id: number;
+  name: string;
+  account_type: string;
+  address: string;
+  city: string;
+  postal: string;
+  phone: string;
+  email: string;
+  contact_name: string;
+  contact_title: string;
+  rep_name: string;
+  status: string;
+  priority: string;
+  products_carried: string;
+  notes: string;
+  licence_sale_no: string;
+  scheme: string;
+  wants_cocktail_menu: boolean;
+  source: string;
+  last_visit: string;
+  next_visit: string;
+  google_maps_url: string;
+  yelp_url: string;
+}
+export interface HorecaAccountFullPayload {
+  account: HorecaAccountFull;
+  tier: string;
+  cases_90d: number;
+  agco_licence: { licence_number: string; status: string; licence_type: string } | null;
+  orders: HorecaOrderRow[];
+  activities: HorecaActivityRow[];
+}
+export interface HorecaReorderDuePayload {
+  days: number;
+  count: number;
+  rows: {
+    account_id: number;
+    name: string;
+    city: string;
+    phone: string;
+    contact_name: string;
+    last_order: string;
+    orders: number;
+    google_maps_url: string;
+    yelp_url: string;
+  }[];
+}
+export interface HorecaMenuRequestsPayload {
+  count: number;
+  rows: {
+    account_id: number;
+    name: string;
+    city: string;
+    contact_name: string;
+    phone: string;
+    email: string;
+    status: string;
+  }[];
+}
+export interface HorecaPortfolioPayload {
+  price_free: boolean;
+  items: {
+    brand: string;
+    sku_name: string;
+    lcbo_num: string;
+    origin: string;
+    listing: string;
+    story: string;
+  }[];
 }

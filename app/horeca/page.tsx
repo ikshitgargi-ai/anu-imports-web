@@ -2,7 +2,8 @@
 
 import { useQuery } from '@tanstack/react-query';
 import { useState } from 'react';
-import { UtensilsCrossed, Plus } from 'lucide-react';
+import Link from 'next/link';
+import { UtensilsCrossed, Plus, Landmark, Wine, BellRing } from 'lucide-react';
 import { api } from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatDate } from '@/lib/utils';
@@ -13,6 +14,7 @@ export default function HorecaPage() {
   const [territoryFilter, setTerritoryFilter] = useState<number | undefined>();
 
   const territories = useQuery({ queryKey: ['territories'], queryFn: api.crmTerritories });
+  const reorderDue = useQuery({ queryKey: ['horeca-reorder-due'], queryFn: () => api.horecaReorderDue(14) });
   const accounts = useQuery({
     queryKey: ['horeca', typeFilter, statusFilter, territoryFilter],
     queryFn: () =>
@@ -35,10 +37,36 @@ export default function HorecaPage() {
             Bars, restaurants, hotels, and catering. On-premise CRM alongside LCBO retail.
           </p>
         </div>
-        <button className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium hover:bg-[#c13030]">
-          <Plus size={16} /> New Account
-        </button>
+        <div className="flex flex-wrap gap-2">
+          <Link href="/horeca/prospects" className="flex items-center gap-2 h-11 px-4 rounded-lg border text-sm font-medium">
+            <Landmark size={16} /> Licensee universe
+          </Link>
+          <Link href="/horeca/portfolio" className="flex items-center gap-2 h-11 px-4 rounded-lg border text-sm font-medium">
+            <Wine size={16} /> Portfolio
+          </Link>
+          <button className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium hover:bg-[#c13030]">
+            <Plus size={16} /> New Account
+          </button>
+        </div>
       </header>
+
+      {(reorderDue.data?.count ?? 0) > 0 && (
+        <Card>
+          <CardContent className="pt-4">
+            <div className="flex items-center gap-2 text-sm font-medium mb-2">
+              <BellRing size={16} className="text-[var(--color-accent)]" />
+              Reorder due ({reorderDue.data!.count}) — bought before, quiet for 14+ days
+            </div>
+            <div className="flex flex-wrap gap-2">
+              {reorderDue.data!.rows.slice(0, 8).map((r) => (
+                <Link key={r.account_id} href={`/horeca/${r.account_id}`} className="badge status-active">
+                  {r.name}
+                </Link>
+              ))}
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       <Card>
         <CardContent className="pt-4 grid grid-cols-1 sm:grid-cols-3 gap-3">
@@ -63,6 +91,9 @@ export default function HorecaPage() {
               className="select"
             >
               <option value="">Any</option>
+              <option value="customer">Customer</option>
+              <option value="tasting">Tasting booked/done</option>
+              <option value="warm">Warm</option>
               <option value="prospect">Prospect</option>
               <option value="active">Active</option>
               <option value="dormant">Dormant</option>
@@ -111,7 +142,9 @@ export default function HorecaPage() {
                 {accounts.data?.map((h) => (
                   <tr key={h.id}>
                     <td data-label="Name" className="font-medium">
-                      {h.name}
+                      <Link href={`/horeca/${h.id}`} className="underline decoration-dotted underline-offset-2">
+                        {h.name}
+                      </Link>
                     </td>
                     <td data-label="Type" className="capitalize">
                       {h.account_type}

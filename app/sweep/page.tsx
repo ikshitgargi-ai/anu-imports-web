@@ -164,7 +164,7 @@ function Stat({ icon, label, value, accent }: { icon: React.ReactNode; label: st
 function VenuesBrowser() {
   const [q, setQ] = useState('');
   const [city, setCity] = useState('');
-  const [licensed, setLicensed] = useState(true);
+  const [licensed, setLicensed] = useState(false); // show EVERY venue by default
   const [hasPhone, setHasPhone] = useState(false);
   const [offset, setOffset] = useState(0);
 
@@ -216,7 +216,11 @@ function VRow({ r }: { r: VenueRow }) {
       <td data-label="Venue" className="font-medium">
         {r.name}
         {r.licensed && <span className="badge status-active ml-1.5">licensed</span>}
-        <div className="text-[11px] font-normal text-[var(--color-muted)]">{[r.address, r.postal].filter(Boolean).join(', ')}</div>
+        <div className="text-[11px] font-normal text-[var(--color-muted)]">
+          {[r.address, r.postal].filter(Boolean).join(', ') || (
+            <a href={r.google_maps_url} target="_blank" rel="noreferrer" className="underline">address on map →</a>
+          )}
+        </div>
       </td>
       <td data-label="Kind" className="capitalize">{r.kind}</td>
       <td data-label="City">{r.city}</td>

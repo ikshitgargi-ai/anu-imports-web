@@ -667,6 +667,20 @@ export const api = {
   reconcile: (days = 7) => request<ReconcilePayload>(`/api/reconcile?days=${days}`),
   exportCanonListingsXlsxUrl: () => `${API_BASE}/api/export/listings.xlsx`,
 
+  // ===== AI Sales Engine =====
+  salesHunt: (body: { region?: string; kind?: string; limit?: number; rep?: string }) =>
+    request<SalesHuntPayload>('/api/sales/hunt', { method: 'POST', body: JSON.stringify(body) }),
+  salesDayPlan: (params: { rep?: string; city?: string; region?: string; days?: number;
+    stops_per_day?: number; start_lat?: number; start_lng?: number } = {}) => {
+    const qs = new URLSearchParams();
+    Object.entries(params).forEach(([k, v]) => { if (v !== undefined && v !== '') qs.set(k, String(v)); });
+    const s = qs.toString();
+    return request<SalesDayPlanPayload>(`/api/sales/day-plan${s ? `?${s}` : ''}`);
+  },
+  salesBrief: (accountId: number) =>
+    request<SalesBriefPayload>('/api/sales/brief', { method: 'POST', body: JSON.stringify({ account_id: accountId }) }),
+  salesPipeline: () => request<SalesPipelinePayload>('/api/sales/pipeline'),
+
   // ===== GTHA sweep — OSM street harvest + enrichment =====
   sweepStatus: () => request<SweepStatusPayload>('/api/horeca/sweep/status'),
   sweepPlan: () => request<{ status: string; tiles_total: number; tiles_added: number }>(
@@ -3241,4 +3255,38 @@ export interface VenuesPayload {
   rows: VenueRow[];
   limit: number;
   offset: number;
+}
+
+// ===== AI Sales Engine payloads =====
+export interface SalesHuntPayload {
+  status: string;
+  promoted: number;
+  next_visit: string;
+  targets: { account_id: number; name: string; city: string; kind: string;
+    priority: string; lead_sku: string; phone: string }[];
+}
+export interface SalesDayStop {
+  account_id: number; name: string; kind: string; address: string; city: string;
+  postal: string; phone: string; status: string; priority: string; lead_sku: string;
+  lat: number; lng: number; next_visit: string; last_visit: string;
+  leg_km: number; drive_min: number; maps_url: string;
+}
+export interface SalesDay {
+  day: number; stops: SalesDayStop[]; stop_count: number; drive_km: number;
+  est_drive_min: number; est_total_min: number; directions_url: string;
+}
+export interface SalesDayPlanPayload {
+  rep: string; start: { lat: number; lng: number }; total_targets: number;
+  planned_stops: number; days: SalesDay[]; planned_km: number;
+  unordered_km: number; km_saved: number; note?: string;
+}
+export interface SalesBriefPayload {
+  account_id: number; ai: boolean; brief: string; source: string;
+}
+export interface SalesPipelinePayload {
+  by_status: Record<string, number>;
+  auto_hunted: number;
+  due_count: number;
+  due_today: { account_id: number; name: string; city: string; status: string;
+    priority: string; lead_sku: string; phone: string; next_visit: string }[];
 }

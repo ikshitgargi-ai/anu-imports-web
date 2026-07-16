@@ -681,6 +681,31 @@ export const api = {
     request<SalesBriefPayload>('/api/sales/brief', { method: 'POST', body: JSON.stringify({ account_id: accountId }) }),
   salesPipeline: () => request<SalesPipelinePayload>('/api/sales/pipeline'),
 
+  // ===== Sales Command =====
+  commission: (rep?: string) =>
+    request<CommissionPayload>(`/api/sales/commission${rep ? `?rep=${encodeURIComponent(rep)}` : ''}`),
+  bottlesMoved: (body: { rep: string; sku: string; units: number; source?: string;
+    store_number?: number; account_id?: number; note?: string }) =>
+    request<{ status: string; credited_units: number }>('/api/sales/bottles-moved',
+      { method: 'POST', body: JSON.stringify(body) }),
+  nextBest: (params: { lat?: number; lng?: number; address?: string; limit?: number }) => {
+    const qs = new URLSearchParams();
+    if (params.lat) qs.set('lat', String(params.lat));
+    if (params.lng) qs.set('lng', String(params.lng));
+    if (params.address) qs.set('address', params.address);
+    if (params.limit) qs.set('limit', String(params.limit));
+    return request<NextBestPayload>(`/api/sales/next-best?${qs.toString()}`);
+  },
+  top100: (list: string) => request<Top100Payload>(`/api/sales/top100?list=${list}`),
+  top100Build: (list: string) =>
+    request<{ status: string; entries: number }>('/api/sales/top100/build',
+      { method: 'POST', body: JSON.stringify({ list }) }),
+  scoreboard: () => request<ScoreboardPayload>('/api/sales/scoreboard'),
+  moveBottles: (sku: string) => request<MoveBottlesPayload>(`/api/sales/move-bottles?sku=${sku}`),
+  orderPayment: (dealId: number, status: string, note?: string) =>
+    request<{ status: string }>(`/api/horeca/order/${dealId}/payment`,
+      { method: 'POST', body: JSON.stringify({ payment_status: status, note }) }),
+
   // ===== GTHA sweep — OSM street harvest + enrichment =====
   sweepStatus: () => request<SweepStatusPayload>('/api/horeca/sweep/status'),
   sweepPlan: () => request<{ status: string; tiles_total: number; tiles_added: number }>(
@@ -3289,4 +3314,43 @@ export interface SalesPipelinePayload {
   due_count: number;
   due_today: { account_id: number; name: string; city: string; status: string;
     priority: string; lead_sku: string; phone: string; next_visit: string }[];
+}
+
+// ===== Sales Command payloads =====
+export interface CommissionProgram {
+  program_id: number; sku: string; sku_name: string; per_unit_bonus: number;
+  rep: string; notes: string; units_from_orders: number;
+  units_from_tastings: number; units_total: number; earned: number;
+  stock_pool_units: number; pool_value: number; case_assumption: string;
+}
+export interface CommissionPayload { rep: string; programs: CommissionProgram[]; }
+export interface NextBestRow {
+  account_id: number; name: string; kind: string; address: string; city: string;
+  phone: string; status: string; priority: string; lead_sku: string; km: number;
+  score: number; action: string; google_maps_url: string; yelp_url: string;
+}
+export interface NextBestPayload {
+  origin: { lat: number; lng: number }; count: number; rows: NextBestRow[];
+}
+export interface Top100Row {
+  rank: number; name: string; city: string; area: string; category: string;
+  why: string; score: number; licence_number: string; account_id: number | null;
+  source: string; google_maps_url: string; yelp_url: string;
+}
+export interface Top100Payload { list: string; count: number; rows: Top100Row[]; }
+export interface ScoreboardPayload {
+  points_of_distribution: { lcbo_store_listings: number; horeca_customers: number; total: number };
+  per_sku: { sku: string; name: string; stores_listed: number; stock_units: number }[];
+  pipeline: Record<string, number>;
+  horeca_orders: { count: number; cases: number };
+  tasting_bonus_earned: number;
+}
+export interface MoveBottlesPayload {
+  sku: string; brand: string; name: string; total_stock_units: number;
+  stock_by_store: { store_number: number; on_hand: number; store: string; city: string }[];
+  tasting_candidates: { store_number: number; on_hand: number; store: string; city: string }[];
+  pitch_venues_near_stock: { name: string; city: string; phone: string; independent: boolean;
+    km_from_stock: number; near_store: number; google_maps_url: string; yelp_url: string }[];
+  reorder_customers: { account_id: number; name: string; city: string; phone: string; last_order: string }[];
+  play: string;
 }

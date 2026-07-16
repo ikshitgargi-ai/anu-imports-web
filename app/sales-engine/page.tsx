@@ -160,7 +160,121 @@ export default function SalesEnginePage() {
           </CardContent>
         </Card>
       )}
+
+      <NextBestCard />
+      <CommissionCard rep={rep} />
     </div>
+  );
+}
+
+function NextBestCard() {
+  const [address, setAddress] = useState('');
+  const [result, setResult] = useState<import('@/lib/api').NextBestPayload | null>(null);
+  const [busy, setBusy] = useState(false);
+  const [err, setErr] = useState('');
+
+  async function run(params: { lat?: number; lng?: number; address?: string }) {
+    setBusy(true); setErr('');
+    try {
+      setResult(await api.nextBest({ ...params, limit: 8 }));
+    } catch (e) {
+      setErr('Could not rank calls — check the address or allow location.');
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  function useMyLocation() {
+    if (!navigator.geolocation) { setErr('Location not available on this device.'); return; }
+    setBusy(true);
+    navigator.geolocation.getCurrentPosition(
+      (pos) => run({ lat: pos.coords.latitude, lng: pos.coords.longitude }),
+      () => { setBusy(false); setErr('Location denied — type an address instead.'); },
+      { enableHighAccuracy: true, timeout: 8000 },
+    );
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2"><MapPin size={16} /> Who do I call right here?</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-3">
+        <div className="flex flex-col sm:flex-row gap-2">
+          <button onClick={useMyLocation} disabled={busy}
+                  className="h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium disabled:opacity-50">
+            {busy ? 'Ranking…' : 'Use my location'}
+          </button>
+          <input value={address} onChange={(e) => setAddress(e.target.value)}
+                 placeholder="…or type an address / your home" className="select flex-1" />
+          <button onClick={() => address && run({ address })} disabled={busy || !address}
+                  className="h-11 px-4 rounded-lg border text-sm font-medium disabled:opacity-50">
+            Rank calls
+          </button>
+        </div>
+        {err && <p className="text-xs text-red-600">{err}</p>}
+        {result?.rows.map((r, i) => (
+          <div key={r.account_id} className="flex items-start justify-between gap-2 text-sm border-b last:border-0 pb-2">
+            <div className="min-w-0">
+              <Link href={`/horeca/${r.account_id}`} className="font-medium underline decoration-dotted underline-offset-2">
+                {i + 1}. {r.name}
+              </Link>
+              <span className="badge ml-1.5">{r.status}</span>
+              <div className="text-[11px] text-[var(--color-muted)]">{r.action}</div>
+            </div>
+            <div className="shrink-0 text-right text-[11px]">
+              <div className="tabular-nums">{r.km} km</div>
+              <div className="flex gap-2 justify-end mt-0.5">
+                {r.phone && <a href={`tel:${r.phone.replace(/[^0-9+]/g, '')}`} className="underline">call</a>}
+                <a href={r.google_maps_url} target="_blank" rel="noreferrer" className="underline">map</a>
+              </div>
+            </div>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
+  );
+}
+
+function CommissionCard({ rep }: { rep: string }) {
+  const commission = useQuery({
+    queryKey: ['commission', rep],
+    queryFn: () => api.commission(rep || undefined),
+    retry: 1,
+  });
+  const progs = commission.data?.programs ?? [];
+  if (progs.length === 0) return null;
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center gap-2"><Target size={16} /> Bonus tracker</CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-4">
+        {progs.map((pr) => {
+          const denom = pr.units_total + pr.stock_pool_units;
+          const pct = denom > 0 ? Math.round((pr.units_total / denom) * 100) : 0;
+          return (
+            <div key={pr.program_id}>
+              <div className="flex justify-between text-sm">
+                <span className="font-medium">{pr.sku_name || pr.sku} · ${pr.per_unit_bonus}/bottle
+                  <span className="text-[var(--color-muted)] font-normal"> · {pr.rep}</span>
+                </span>
+                <span className="font-semibold text-[var(--color-accent)] tabular-nums">
+                  ${pr.earned.toFixed(2)} earned
+                </span>
+              </div>
+              <div className="h-2 rounded-full bg-[var(--color-card-border)] overflow-hidden mt-1.5">
+                <div className="h-full bg-[var(--color-accent)]" style={{ width: `${pct}%` }} />
+              </div>
+              <div className="text-[11px] text-[var(--color-muted)] mt-1">
+                {pr.units_total} bottles credited ({pr.units_from_orders} HORECA + {pr.units_from_tastings} tastings)
+                · {pr.stock_pool_units} still in market worth ${pr.pool_value.toFixed(0)} more
+              </div>
+            </div>
+          );
+        })}
+      </CardContent>
+    </Card>
   );
 }
 

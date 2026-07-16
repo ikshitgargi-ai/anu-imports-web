@@ -82,6 +82,8 @@ const NAV_SECONDARY = [
   { href: '/goals', label: 'Goals', icon: Flag },
   { href: '/horeca', label: 'HORECA', icon: UtensilsCrossed },
   { href: '/sales-engine', label: 'AI Sales Engine', icon: Sparkles },
+  { href: '/top100', label: 'Top-100 Targets', icon: Sparkles },
+  { href: '/move-bottles', label: 'Move Bottles', icon: Sparkles },
   { href: '/horeca/prospects', label: 'Licensee Universe', icon: Compass },
   { href: '/sweep', label: 'GTHA Street Sweep', icon: Compass },
   { href: '/prospect', label: 'Find New Accounts', icon: Compass },

@@ -113,7 +113,7 @@ function Row({ r }: { r: ReconcileRow }) {
       <td data-label="Store">
         #{r.store_number}
         <div className="text-[11px] text-[var(--color-muted)]">
-          {[r.account, r.city].filter(Boolean).join(' · ')}
+          {[r.account, (r as { address?: string }).address, r.city].filter(Boolean).join(' · ')}
         </div>
       </td>
       <td data-label="SOD" className="tabular-nums">

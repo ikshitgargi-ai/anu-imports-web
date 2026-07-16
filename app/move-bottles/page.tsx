@@ -52,7 +52,7 @@ export default function MoveBottlesPage() {
             <CardContent className="space-y-2 text-sm">
               {p.stock_by_store.map((s) => (
                 <div key={s.store_number} className="flex justify-between border-b last:border-0 pb-1.5">
-                  <span>#{s.store_number} {s.store} <span className="text-[var(--color-muted)]">· {s.city}</span></span>
+                  <span>#{s.store_number} {s.store} <span className="text-[var(--color-muted)]">· {s.address ? `${s.address}, ` : ''}{s.city}</span></span>
                   <span className="tabular-nums font-medium">{s.on_hand} btl
                     {p.tasting_candidates.some((t) => t.store_number === s.store_number) &&
                       <span className="badge status-active ml-1.5">tasting here</span>}

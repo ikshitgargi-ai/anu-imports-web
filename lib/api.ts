@@ -702,6 +702,14 @@ export const api = {
       { method: 'POST', body: JSON.stringify({ list }) }),
   scoreboard: () => request<ScoreboardPayload>('/api/sales/scoreboard'),
   moveBottles: (sku: string) => request<MoveBottlesPayload>(`/api/sales/move-bottles?sku=${sku}`),
+  actionsList: (rep?: string) =>
+    request<ActionsPayload>(`/api/sales/actions${rep ? `?rep=${encodeURIComponent(rep)}` : ''}`),
+  actionsGenerate: () =>
+    request<{ status: string; created: number }>('/api/sales/actions/generate',
+      { method: 'POST', body: JSON.stringify({}) }),
+  actionStatus: (id: number, status: string) =>
+    request<{ status: string }>(`/api/sales/actions/${id}/status`,
+      { method: 'POST', body: JSON.stringify({ status }) }),
   orderPayment: (dealId: number, status: string, note?: string) =>
     request<{ status: string }>(`/api/horeca/order/${dealId}/payment`,
       { method: 'POST', body: JSON.stringify({ payment_status: status, note }) }),
@@ -3347,10 +3355,19 @@ export interface ScoreboardPayload {
 }
 export interface MoveBottlesPayload {
   sku: string; brand: string; name: string; total_stock_units: number;
-  stock_by_store: { store_number: number; on_hand: number; store: string; city: string }[];
-  tasting_candidates: { store_number: number; on_hand: number; store: string; city: string }[];
+  stock_by_store: { store_number: number; on_hand: number; store: string; city: string; address?: string }[];
+  tasting_candidates: { store_number: number; on_hand: number; store: string; city: string; address?: string }[];
   pitch_venues_near_stock: { name: string; city: string; phone: string; independent: boolean;
     km_from_stock: number; near_store: number; google_maps_url: string; yelp_url: string }[];
   reorder_customers: { account_id: number; name: string; city: string; phone: string; last_order: string }[];
   play: string;
 }
+
+// ===== Autopilot action queue =====
+export interface ActionRow {
+  id: number; rep: string; kind: string; sku: string;
+  store_number: number | null; store_label: string; account_id: number | null;
+  target_name: string; title: string; why: string; priority: number;
+  status: string; created_at: string;
+}
+export interface ActionsPayload { count: number; rows: ActionRow[]; }

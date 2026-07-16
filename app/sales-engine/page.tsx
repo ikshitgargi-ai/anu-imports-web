@@ -161,6 +161,7 @@ export default function SalesEnginePage() {
         </Card>
       )}
 
+      <ActionQueueCard rep={rep} />
       <NextBestCard />
       <CommissionCard rep={rep} />
     </div>
@@ -326,5 +327,51 @@ function StopRow({ s, n }: { s: SalesDayStop; n: number }) {
       {loading && <div className="text-[11px] text-[var(--color-muted)] mt-1.5">Thinking…</div>}
       {brief && <div className="text-xs mt-1.5 p-2 rounded bg-[var(--color-card-border)]/30">{brief}</div>}
     </div>
+  );
+}
+
+function ActionQueueCard({ rep }: { rep: string }) {
+  const qc = useQueryClient();
+  const q = useQuery({ queryKey: ['actions', rep], queryFn: () => api.actionsList(rep || undefined), retry: 1 });
+  const gen = useMutation({ mutationFn: api.actionsGenerate,
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['actions'] }) });
+  const setStatus = useMutation({
+    mutationFn: ({ id, status }: { id: number; status: string }) => api.actionStatus(id, status),
+    onSuccess: () => qc.invalidateQueries({ queryKey: ['actions'] }) });
+  const rows = q.data?.rows ?? [];
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle className="flex items-center justify-between">
+          <span className="flex items-center gap-2"><Sparkles size={16} /> Today&apos;s plan (autopilot)</span>
+          <button onClick={() => gen.mutate()} disabled={gen.isPending}
+                  className="text-xs h-8 px-3 rounded border font-medium disabled:opacity-50">
+            {gen.isPending ? 'Planning…' : 'Refill queue'}
+          </button>
+        </CardTitle>
+      </CardHeader>
+      <CardContent className="space-y-2">
+        {rows.length === 0 && <p className="text-sm text-[var(--color-muted)]">Queue is clear — press Refill, or enjoy it.</p>}
+        {rows.slice(0, 12).map((a) => (
+          <div key={a.id} className="flex items-start justify-between gap-2 text-sm border-b last:border-0 pb-2">
+            <div className="min-w-0">
+              <span className="font-medium">
+                {a.account_id ? (
+                  <Link href={`/horeca/${a.account_id}`} className="underline decoration-dotted underline-offset-2">{a.title}</Link>
+                ) : a.title}
+              </span>
+              {a.store_label && <div className="text-[11px] text-[var(--color-muted)]">{a.store_label}</div>}
+              <div className="text-[11px] text-[var(--color-muted)]">{a.why}</div>
+            </div>
+            <div className="shrink-0 flex gap-1.5">
+              <button onClick={() => setStatus.mutate({ id: a.id, status: 'done' })}
+                      className="text-[11px] h-7 px-2.5 rounded bg-[var(--color-primary)] text-white">done</button>
+              <button onClick={() => setStatus.mutate({ id: a.id, status: 'skipped' })}
+                      className="text-[11px] h-7 px-2.5 rounded border">skip</button>
+            </div>
+          </div>
+        ))}
+      </CardContent>
+    </Card>
   );
 }

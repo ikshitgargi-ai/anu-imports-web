@@ -713,6 +713,17 @@ export const api = {
   orderPayment: (dealId: number, status: string, note?: string) =>
     request<{ status: string }>(`/api/horeca/order/${dealId}/payment`,
       { method: 'POST', body: JSON.stringify({ payment_status: status, note }) }),
+  venueSearch: (q: string, live = true) =>
+    request<VenueSearchPayload>(
+      `/api/horeca/venue-search?q=${encodeURIComponent(q)}${live ? '&live=1' : ''}`),
+  quickAdd: (body: { name: string; address?: string; city?: string; phone?: string;
+    rep?: string; account_type?: string }) =>
+    request<QuickAddResult>('/api/horeca/quick-add',
+      { method: 'POST', body: JSON.stringify(body) }),
+  velocity: (days: number, sku?: string) =>
+    request<VelocityPayload>(
+      `/api/sales/velocity?days=${days}${sku ? `&sku=${sku}` : ''}`),
+  rebalance: (sku: string) => request<RebalancePayload>(`/api/sales/rebalance?sku=${sku}`),
 
   // ===== GTHA sweep — OSM street harvest + enrichment =====
   sweepStatus: () => request<SweepStatusPayload>('/api/horeca/sweep/status'),
@@ -3371,3 +3382,54 @@ export interface ActionRow {
   status: string; created_at: string;
 }
 export interface ActionsPayload { count: number; rows: ActionRow[]; }
+
+export interface VenueSearchRow {
+  kind: 'account' | 'licensee' | 'venue' | 'address';
+  name: string;
+  city?: string;
+  address?: string;
+  phone?: string;
+  status?: string;
+  account_id?: number;
+  licence_number?: string;
+  lat?: number;
+  lng?: number;
+  note?: string;
+}
+export interface VenueSearchPayload { q: string; rows: VenueSearchRow[]; }
+export interface QuickAddResult {
+  status: 'created' | 'exists';
+  account_id: number;
+  name: string;
+  city?: string;
+  address?: string;
+  licence_no?: string;
+  geocoded?: boolean;
+}
+export interface VelocityRow {
+  sku: string;
+  brand: string;
+  product_name: string;
+  store_number: number;
+  store_label: string;
+  start_on_hand: number;
+  on_hand: number;
+  sold_est: number;
+  rate_per_week: number;
+  days_of_cover: number | null;
+  class: 'fast' | 'steady' | 'slow' | 'stagnant';
+  snapshots: number;
+}
+export interface VelocityPayload {
+  days: number;
+  rows: VelocityRow[];
+  by_class: Record<string, number>;
+  note: string;
+}
+export interface RebalancePayload {
+  sku: string;
+  product_name: string;
+  slow_heavy: VelocityRow[];
+  fast_low: VelocityRow[];
+  play: string;
+}

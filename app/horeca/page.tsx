@@ -7,8 +7,10 @@ import { UtensilsCrossed, Plus, Landmark, Wine, BellRing } from 'lucide-react';
 import { api } from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
 import { formatDate } from '@/lib/utils';
+import { QuickAddAccount } from '@/components/quick-add-account';
 
 export default function HorecaPage() {
+  const [showAdd, setShowAdd] = useState(false);
   const [typeFilter, setTypeFilter] = useState<string>('');
   const [statusFilter, setStatusFilter] = useState<string>('');
   const [territoryFilter, setTerritoryFilter] = useState<number | undefined>();
@@ -44,11 +46,25 @@ export default function HorecaPage() {
           <Link href="/horeca/portfolio" className="flex items-center gap-2 h-11 px-4 rounded-lg border text-sm font-medium">
             <Wine size={16} /> Portfolio
           </Link>
-          <button className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium hover:bg-[#c13030]">
+          <button
+            onClick={() => setShowAdd((v) => !v)}
+            className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium hover:bg-[#c13030]"
+          >
             <Plus size={16} /> New Account
           </button>
         </div>
       </header>
+
+      {showAdd && (
+        <Card>
+          <CardHeader>
+            <CardTitle>Find or add a venue</CardTitle>
+          </CardHeader>
+          <CardContent>
+            <QuickAddAccount onDone={() => setShowAdd(false)} />
+          </CardContent>
+        </Card>
+      )}
 
       {(reorderDue.data?.count ?? 0) > 0 && (
         <Card>

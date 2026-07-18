@@ -720,7 +720,7 @@ export const api = {
     rep?: string; account_type?: string }) =>
     request<QuickAddResult>('/api/horeca/quick-add',
       { method: 'POST', body: JSON.stringify(body) }),
-  velocity: (days: number, sku?: string) =>
+  salesVelocity: (days: number, sku?: string) =>
     request<VelocityPayload>(
       `/api/sales/velocity?days=${days}${sku ? `&sku=${sku}` : ''}`),
   rebalance: (sku: string) => request<RebalancePayload>(`/api/sales/rebalance?sku=${sku}`),

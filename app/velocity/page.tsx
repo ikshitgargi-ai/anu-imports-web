@@ -35,7 +35,7 @@ export default function VelocityPage() {
 
   const vel = useQuery({
     queryKey: ['velocity', days, sku],
-    queryFn: () => api.velocity(days, sku || undefined),
+    queryFn: () => api.salesVelocity(days, sku || undefined),
     retry: 1,
   });
   const reb = useQuery({

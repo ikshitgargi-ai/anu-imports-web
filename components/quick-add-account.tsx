@@ -111,7 +111,8 @@ export function QuickAddAccount({ onDone }: { onDone?: () => void }) {
                 <span className="badge ml-2">
                   {r.kind === 'account' ? 'in your book' :
                    r.kind === 'licensee' ? 'AGCO licensed' :
-                   r.kind === 'venue' ? 'on the map' : 'new address'}
+                   r.kind === 'venue' ? 'on the map' :
+                   r.kind === 'google' ? 'Google' : 'new address'}
                 </span>
                 <div className="text-[11px] text-[var(--color-muted)] flex items-center gap-2 mt-0.5">
                   {(r.address || r.city) && (

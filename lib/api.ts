@@ -3384,7 +3384,7 @@ export interface ActionRow {
 export interface ActionsPayload { count: number; rows: ActionRow[]; }
 
 export interface VenueSearchRow {
-  kind: 'account' | 'licensee' | 'venue' | 'address';
+  kind: 'account' | 'licensee' | 'venue' | 'google' | 'address';
   name: string;
   city?: string;
   address?: string;

@@ -3417,7 +3417,7 @@ export interface VelocityRow {
   sold_est: number;
   rate_per_week: number;
   days_of_cover: number | null;
-  class: 'fast' | 'steady' | 'slow' | 'stagnant';
+  class: 'fast' | 'steady' | 'slow' | 'stagnant' | 'out';
   snapshots: number;
 }
 export interface VelocityPayload {

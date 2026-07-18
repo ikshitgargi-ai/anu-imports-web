@@ -19,6 +19,7 @@ const CLASS_STYLE: Record<string, string> = {
   steady: 'badge-neutral',
   slow: 'badge-delisting',
   stagnant: 'badge-delisted',
+  out: 'badge-delisted',
 };
 
 const CLASS_HINT: Record<string, string> = {
@@ -26,6 +27,7 @@ const CLASS_HINT: Record<string, string> = {
   steady: 'healthy movement',
   slow: 'over 60 days of cover',
   stagnant: 'stock on shelf, zero movement in the window',
+  out: 'empty shelf, nothing moving: restock or delist question',
 };
 
 export default function VelocityPage() {

@@ -26,6 +26,7 @@ export function QuickAddAccount({ onDone }: { onDone?: () => void }) {
   const [searching, setSearching] = useState(false);
   const [form, setForm] = useState({ name: '', address: '', city: '', phone: '', rep: '', account_type: 'restaurant' });
   const [showForm, setShowForm] = useState(false);
+  const [googleAssist, setGoogleAssist] = useState(false);
   const [saving, setSaving] = useState(false);
   const [error, setError] = useState('');
   const timer = useRef<ReturnType<typeof setTimeout> | null>(null);
@@ -50,6 +51,17 @@ export function QuickAddAccount({ onDone }: { onDone?: () => void }) {
       onDone?.();
       return;
     }
+    if (r.kind === 'google') {
+      // Google's terms forbid storing their place content, so a Google
+      // suggestion is a search aid only: it carries the name across, and the
+      // address/phone are then filled from OUR sources (the AGCO licence
+      // match on save) or typed by the rep. Nothing from Google is saved.
+      setForm((f) => ({ ...f, name: r.name }));
+      setGoogleAssist(true);
+      setShowForm(true);
+      return;
+    }
+    setGoogleAssist(false);
     setForm((f) => ({
       ...f,
       name: r.kind === 'address' ? f.name || q : r.name,
@@ -125,6 +137,11 @@ export function QuickAddAccount({ onDone }: { onDone?: () => void }) {
                 </div>
               </button>
             ))}
+            {rows.some((r) => r.kind === 'google') && (
+              <div className="px-3 py-1.5 text-[10px] text-[var(--color-muted)] border-t">
+                Some suggestions powered by Google
+              </div>
+            )}
           </div>
         )}
       </div>
@@ -163,6 +180,13 @@ export function QuickAddAccount({ onDone }: { onDone?: () => void }) {
               </select>
             </L>
           </div>
+          {googleAssist && (
+            <p className="text-[11px] text-[var(--color-muted)]">
+              Name carried over from the Google suggestion. Type the address, or
+              leave it blank and it fills automatically if the venue matches an
+              AGCO licence on save.
+            </p>
+          )}
           {error && <p className="text-sm text-[var(--color-danger)]">{error}</p>}
           <div className="flex gap-2">
             <button

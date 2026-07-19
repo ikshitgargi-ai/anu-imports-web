@@ -724,6 +724,15 @@ export const api = {
     request<VelocityPayload>(
       `/api/sales/velocity?days=${days}${sku ? `&sku=${sku}` : ''}`),
   rebalance: (sku: string) => request<RebalancePayload>(`/api/sales/rebalance?sku=${sku}`),
+  teamQueue: (role: string) => request<TeamQueuePayload>(`/api/team/queue?role=${role}`),
+  outreachCheck: (destination: string, channel = 'email') =>
+    request<OutreachCheck>(
+      `/api/outreach/check?destination=${encodeURIComponent(destination)}&channel=${channel}`),
+  outreachSuppress: (body: { destination: string; reason?: string; note?: string; rep?: string }) =>
+    request<{ status: string; destination: string; note: string }>(
+      '/api/outreach/suppress', { method: 'POST', body: JSON.stringify(body) }),
+  outreachScoreboard: (days = 90) =>
+    request<OutreachScoreboard>(`/api/outreach/scoreboard?days=${days}`),
 
   // ===== GTHA sweep — OSM street harvest + enrichment =====
   sweepStatus: () => request<SweepStatusPayload>('/api/horeca/sweep/status'),
@@ -3382,6 +3391,55 @@ export interface ActionRow {
   status: string; created_at: string;
 }
 export interface ActionsPayload { count: number; rows: ActionRow[]; }
+
+export interface TeamQueueRow {
+  account_id?: number;
+  licence_number?: string;
+  store_number?: number;
+  store_label?: string;
+  name?: string;
+  city?: string;
+  address?: string;
+  phone?: string;
+  action: string;
+  why: string;
+  priority: number;
+  casl_note?: string;
+  do_not_contact?: boolean;
+  dnc_note?: string;
+  days_quiet?: number;
+  on_hand?: number;
+}
+export interface TeamQueuePayload {
+  role: string;
+  count: number;
+  rows: TeamQueueRow[];
+  caps: Record<string, number>;
+  rule: string;
+}
+export interface OutreachCheck {
+  destination: string;
+  channel: string;
+  allowed: boolean;
+  reason: string;
+  consent_kind: string;
+  daily_cap: number;
+  sent_today: number;
+}
+export interface OutreachScoreboard {
+  days: number;
+  rows: Array<{
+    channel: string;
+    attempts: number;
+    sent: number;
+    blocked: number;
+    bottles_moved: number;
+    bottles_per_touch: number;
+  }>;
+  suppression_list_size: number;
+  caps: Record<string, number>;
+  note: string;
+}
 
 export interface VenueSearchRow {
   kind: 'account' | 'licensee' | 'venue' | 'google' | 'address';

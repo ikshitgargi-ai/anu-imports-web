@@ -1,13 +1,25 @@
 import type { Metadata, Viewport } from 'next';
-import { Inter } from 'next/font/google';
+import { Cormorant_Garamond, Outfit } from 'next/font/google';
 import './globals.css';
 import { Providers } from '@/components/providers';
 import { AppShell } from '@/components/app-shell';
 
-const inter = Inter({ subsets: ['latin'], variable: '--font-geist-sans' });
+const cormorant = Cormorant_Garamond({
+  weight: ['400', '500', '600', '700'],
+  style: ['normal', 'italic'],
+  subsets: ['latin'],
+  variable: '--font-cormorant',
+  display: 'swap',
+});
+
+const outfit = Outfit({
+  subsets: ['latin'],
+  variable: '--font-outfit',
+  display: 'swap',
+});
 
 export const metadata: Metadata = {
-  title: 'Anu Imports — HORECA & LCBO',
+  title: 'Anu Imports | HORECA & LCBO',
   description: 'HORECA & LCBO CRM for the Anu Spirits import portfolio',
   appleWebApp: {
     title: 'Anu Imports',
@@ -28,7 +40,7 @@ export const metadata: Metadata = {
 };
 
 export const viewport: Viewport = {
-  themeColor: '#0a0c10',
+  themeColor: '#060c18',
   width: 'device-width',
   initialScale: 1,
   maximumScale: 5,
@@ -39,7 +51,7 @@ export default function RootLayout({
   children,
 }: Readonly<{ children: React.ReactNode }>) {
   return (
-    <html lang="en" className={`${inter.variable} antialiased`}>
+    <html lang="en" className={`${cormorant.variable} ${outfit.variable} antialiased`}>
       <body>
         <Providers>
           <AppShell>{children}</AppShell>

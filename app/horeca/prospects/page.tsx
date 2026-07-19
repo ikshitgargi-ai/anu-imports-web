@@ -72,7 +72,7 @@ export default function HorecaProspectsPage() {
         <button
           onClick={() => sync.mutate()}
           disabled={sync.isPending}
-          className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium disabled:opacity-50"
+          className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-medium disabled:opacity-50"
         >
           <RefreshCw size={16} className={sync.isPending ? 'animate-spin' : ''} />
           {sync.isPending ? 'Syncing AGCO…' : 'Sync AGCO data'}
@@ -211,7 +211,7 @@ export default function HorecaProspectsPage() {
                         <button
                           onClick={() => addToBook.mutate(r)}
                           disabled={addToBook.isPending}
-                          className="text-xs h-8 px-3 rounded bg-[var(--color-primary)] text-white disabled:opacity-50"
+                          className="text-xs h-8 px-3 rounded bg-[var(--color-primary)] text-[var(--color-primary-fg)] disabled:opacity-50"
                         >
                           Add to book
                         </button>

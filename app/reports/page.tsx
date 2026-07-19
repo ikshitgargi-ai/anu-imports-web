@@ -58,7 +58,7 @@ export default function ReportsPage() {
             className={cn(
               'h-11 px-4 rounded-lg text-sm font-medium transition-colors',
               range === r
-                ? 'bg-[var(--color-primary)] text-white'
+                ? 'bg-[var(--color-primary)] text-[var(--color-primary-fg)]'
                 : 'bg-[var(--color-card)] border border-[var(--color-card-border)] text-[var(--color-foreground)]',
             )}
           >
@@ -68,7 +68,7 @@ export default function ReportsPage() {
       </div>
 
       {report.data?.window.window_shifted && (
-        <div className="rounded-lg border border-[rgba(253,203,110,0.3)] bg-[rgba(253,203,110,0.08)] p-3 text-sm text-[#fdd680]">
+        <div className="rounded-lg border border-[rgba(253,203,110,0.3)] bg-[rgba(253,203,110,0.08)] p-3 text-sm text-[#ffd780]">
           <b>Window shifted.</b> You requested {formatDate(report.data.window.requested_window.start)} →{' '}
           {formatDate(report.data.window.requested_window.end)}, but no data in that range. Showing{' '}
           {formatDate(report.data.window.start)} → {formatDate(report.data.window.end)} instead.
@@ -235,7 +235,7 @@ function CompareSection() {
               className={cn(
                 'change-chip min-h-9 px-3',
                 kind === k
-                  ? 'bg-[var(--color-accent)] text-[#2a1f0f]'
+                  ? 'bg-[var(--color-accent)] text-[var(--color-primary-fg)]'
                   : 'bg-[var(--color-card)] border border-[var(--color-card-border)]',
               )}
             >

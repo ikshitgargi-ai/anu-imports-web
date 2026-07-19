@@ -46,7 +46,7 @@ export default function SourceDriftPage() {
             onClick={() => setHours(h)}
             className={`px-3 py-1.5 rounded text-xs ${
               hours === h
-                ? 'bg-[var(--color-accent)] text-[#2a1f0f] font-semibold'
+                ? 'bg-[var(--color-accent)] text-[var(--color-primary-fg)] font-semibold'
                 : 'text-muted hover:text-[var(--color-foreground)] border border-[var(--color-card-border)]'
             }`}
           >
@@ -208,7 +208,7 @@ export default function SourceDriftPage() {
 
       {/* How-to-read */}
       {u?.how_to_read && (
-        <div className="m-card flex items-start gap-3 border-[rgba(212,165,116,0.3)] bg-[rgba(212,165,116,0.06)]">
+        <div className="m-card flex items-start gap-3 border-[rgba(216,173,88,0.3)] bg-[rgba(216,173,88,0.06)]">
           <AlertTriangle size={18} className="text-[var(--color-accent)] shrink-0 mt-0.5" />
           <div className="text-xs text-muted">{u.how_to_read}</div>
         </div>
@@ -267,7 +267,7 @@ function DriftList({
 }) {
   const accent =
     highlight === 'danger'
-      ? 'border-[rgba(239,75,75,0.3)]'
+      ? 'border-[rgba(229,72,77,0.3)]'
       : highlight === 'warning'
         ? 'border-[rgba(253,203,110,0.3)]'
         : 'border-[var(--color-card-border)]';
@@ -283,7 +283,7 @@ function DriftList({
             <Link
               key={sn}
               href={`/stores/${sn}`}
-              className="text-xs font-mono px-2 py-0.5 rounded bg-[rgba(255,255,255,0.05)] hover:bg-[var(--color-accent)] hover:text-[#2a1f0f]"
+              className="text-xs font-mono px-2 py-0.5 rounded bg-[rgba(255,255,255,0.05)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-fg)]"
             >
               #{sn}
             </Link>

@@ -257,7 +257,7 @@ export default function RoutePlannerPage() {
 
             {/* No-coords yet, permission still pending — explain what's about to pop */}
             {!coords && permState === 'prompt' && (city || district) && !gpsLoading && (
-              <div className="flex items-start gap-2 text-xs p-2 rounded bg-[rgba(212,165,116,0.08)] border border-[rgba(212,165,116,0.3)]">
+              <div className="flex items-start gap-2 text-xs p-2 rounded bg-[rgba(216,173,88,0.08)] border border-[rgba(216,173,88,0.3)]">
                 <MapPin size={14} className="text-[var(--color-accent)] shrink-0 mt-0.5" />
                 <span>
                   Tap <b>Allow</b> when your phone asks for location — the route is built from where you are.
@@ -320,7 +320,7 @@ export default function RoutePlannerPage() {
                   href={mapUrl}
                   target="_blank"
                   rel="noopener noreferrer"
-                  className="inline-flex items-center gap-1.5 h-10 px-3 rounded-lg bg-[var(--color-accent)] text-[#2a1f0f] text-sm font-semibold"
+                  className="inline-flex items-center gap-1.5 h-10 px-3 rounded-lg bg-[var(--color-accent)] text-[var(--color-primary-fg)] text-sm font-semibold"
                 >
                   <Navigation size={14} /> Open in Google Maps
                 </a>
@@ -404,7 +404,7 @@ export default function RoutePlannerPage() {
                   <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[var(--color-card-border)]">
                     <Link
                       href={`/log?store=${s.store_number}${activeRep ? `&rep=${encodeURIComponent(activeRep)}` : ''}`}
-                      className="flex-1 inline-flex items-center justify-center gap-1.5 h-10 rounded-lg bg-[var(--color-primary)] text-white text-sm font-semibold"
+                      className="flex-1 inline-flex items-center justify-center gap-1.5 h-10 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-semibold"
                     >
                       Log Visit
                     </Link>

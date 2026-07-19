@@ -156,7 +156,7 @@ export default function ProspectPage() {
                       onClick={() => setSource(s.id)}
                       className={`px-4 py-2 rounded-lg font-semibold text-sm ${
                         active
-                          ? 'bg-[var(--color-accent)] text-[#2a1f0f]'
+                          ? 'bg-[var(--color-accent)] text-[var(--color-primary-fg)]'
                           : 'bg-[var(--color-card)] border border-[var(--color-card-border)]'
                       }`}
                     >
@@ -188,7 +188,7 @@ export default function ProspectPage() {
                         onClick={() => toggleCategory(cat)}
                         className={`px-4 py-2 rounded-lg font-semibold text-sm capitalize ${
                           active
-                            ? 'bg-[var(--color-accent)] text-[#2a1f0f]'
+                            ? 'bg-[var(--color-accent)] text-[var(--color-primary-fg)]'
                             : 'bg-[var(--color-card)] border border-[var(--color-card-border)]'
                         }`}
                       >

@@ -60,7 +60,7 @@ export default function LedgerPage() {
         </div>
         <a
           href={api.exportCanonListingsXlsxUrl()}
-          className="shrink-0 flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium"
+          className="shrink-0 flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-medium"
         >
           <Download size={15} /> Excel
         </a>

@@ -48,7 +48,7 @@ export default function HorecaPage() {
           </Link>
           <button
             onClick={() => setShowAdd((v) => !v)}
-            className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium hover:bg-[#c13030]"
+            className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-medium hover:bg-[var(--color-accent)]"
           >
             <Plus size={16} /> New Account
           </button>

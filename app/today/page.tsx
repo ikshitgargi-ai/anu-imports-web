@@ -197,7 +197,7 @@ export default function TodayPage() {
                 <div className="flex items-center gap-2 mt-3 pt-3 border-t border-[var(--color-card-border)]">
                   <Link
                     href={`/log?store=${s.store_number}&rep=${encodeURIComponent(rep)}`}
-                    className="flex-1 inline-flex items-center justify-center gap-1.5 h-11 rounded-lg bg-[var(--color-primary)] text-white text-sm font-semibold"
+                    className="flex-1 inline-flex items-center justify-center gap-1.5 h-11 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-semibold"
                   >
                     Log Visit
                   </Link>

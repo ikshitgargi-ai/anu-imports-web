@@ -92,7 +92,7 @@ export default function SalesEnginePage() {
           <button
             onClick={() => hunt.mutate()}
             disabled={hunt.isPending}
-            className="h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium disabled:opacity-50 flex items-center justify-center gap-2"
+            className="h-11 px-4 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-medium disabled:opacity-50 flex items-center justify-center gap-2"
           >
             <Sparkles size={15} className={hunt.isPending ? 'animate-pulse' : ''} />
             {hunt.isPending ? 'Hunting…' : 'Hunt leads'}
@@ -136,7 +136,7 @@ export default function SalesEnginePage() {
                   </span>
                 </div>
                 <a href={d.directions_url} target="_blank" rel="noreferrer"
-                   className="text-xs flex items-center gap-1 h-8 px-3 rounded bg-[var(--color-accent)] text-[#2a1f0f] font-semibold">
+                   className="text-xs flex items-center gap-1 h-8 px-3 rounded bg-[var(--color-accent)] text-[var(--color-primary-fg)] font-semibold">
                   <Navigation size={12} /> Drive this day
                 </a>
               </div>
@@ -203,7 +203,7 @@ function NextBestCard() {
       <CardContent className="space-y-3">
         <div className="flex flex-col sm:flex-row gap-2">
           <button onClick={useMyLocation} disabled={busy}
-                  className="h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium disabled:opacity-50">
+                  className="h-11 px-4 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-medium disabled:opacity-50">
             {busy ? 'Ranking…' : 'Use my location'}
           </button>
           <input value={address} onChange={(e) => setAddress(e.target.value)}
@@ -213,7 +213,7 @@ function NextBestCard() {
             Rank calls
           </button>
         </div>
-        {err && <p className="text-xs text-red-600">{err}</p>}
+        {err && <p className="text-xs text-[var(--color-danger)]">{err}</p>}
         {result?.rows.map((r, i) => (
           <div key={r.account_id} className="flex items-start justify-between gap-2 text-sm border-b last:border-0 pb-2">
             <div className="min-w-0">
@@ -365,7 +365,7 @@ function ActionQueueCard({ rep }: { rep: string }) {
             </div>
             <div className="shrink-0 flex gap-1.5">
               <button onClick={() => setStatus.mutate({ id: a.id, status: 'done' })}
-                      className="text-[11px] h-7 px-2.5 rounded bg-[var(--color-primary)] text-white">done</button>
+                      className="text-[11px] h-7 px-2.5 rounded bg-[var(--color-primary)] text-[var(--color-primary-fg)]">done</button>
               <button onClick={() => setStatus.mutate({ id: a.id, status: 'skipped' })}
                       className="text-[11px] h-7 px-2.5 rounded border">skip</button>
             </div>

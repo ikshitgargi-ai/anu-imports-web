@@ -109,7 +109,7 @@ export default function SweepPage() {
             <button
               onClick={runFullSweep}
               disabled={running}
-              className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium disabled:opacity-50"
+              className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-medium disabled:opacity-50"
             >
               <Play size={15} className={running ? 'animate-pulse' : ''} />
               {running ? 'Sweeping…' : (s?.tiles_done ? 'Resume / re-run sweep' : 'Run the GTHA sweep')}

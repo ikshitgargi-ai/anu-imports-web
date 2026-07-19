@@ -78,9 +78,9 @@ export function PasscodeGate({
   if (!unlocked) {
     return (
       <div className="max-w-sm mx-auto py-12">
-        <div className="m-card text-center space-y-4 border-[rgba(212,165,116,0.3)]">
+        <div className="m-card text-center space-y-4 border-[rgba(216,173,88,0.3)]">
           <div className="flex justify-center">
-            <div className="w-12 h-12 rounded-full bg-[rgba(212,165,116,0.08)] flex items-center justify-center">
+            <div className="w-12 h-12 rounded-full bg-[rgba(216,173,88,0.08)] flex items-center justify-center">
               <Lock size={20} className="text-[var(--color-accent)]" />
             </div>
           </div>

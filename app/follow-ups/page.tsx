@@ -44,7 +44,7 @@ export default function FollowUpsPage() {
             onClick={() => setDays(d)}
             className={`shrink-0 px-3 py-1.5 rounded-full text-xs font-semibold min-h-10 ${
               days === d
-                ? 'bg-[var(--color-primary)] text-white'
+                ? 'bg-[var(--color-primary)] text-[var(--color-primary-fg)]'
                 : 'bg-[var(--color-card)] border border-[var(--color-card-border)]'
             }`}
           >

@@ -309,7 +309,7 @@ export default function RprBlitzPage() {
               onClick={() => setTab(t.id)}
               className={`shrink-0 px-4 py-2.5 rounded-full text-sm font-semibold min-h-11 ${
                 sel
-                  ? 'bg-[var(--color-accent)] text-[#2a1f0f]'
+                  ? 'bg-[var(--color-accent)] text-[var(--color-primary-fg)]'
                   : 'bg-[var(--color-card)] border border-[var(--color-card-border)]'
               }`}
             >
@@ -459,7 +459,7 @@ export default function RprBlitzPage() {
                       href={l.url}
                       target="_blank"
                       rel="noopener noreferrer"
-                      className="inline-flex items-center gap-2 h-11 px-4 rounded-lg text-sm font-medium bg-[var(--color-accent)] text-[#2a1f0f] active:scale-[0.98]"
+                      className="inline-flex items-center gap-2 h-11 px-4 rounded-lg text-sm font-medium bg-[var(--color-accent)] text-[var(--color-primary-fg)] active:scale-[0.98]"
                     >
                       <Navigation size={14} /> {l.label}
                     </a>
@@ -475,7 +475,7 @@ export default function RprBlitzPage() {
                         onClick={() => setLogStore(s)}
                         className={cn(
                           'm-card block w-full text-left',
-                          s.status === 'done' && 'border-[rgba(18,194,140,0.45)]',
+                          s.status === 'done' && 'border-[rgba(45,212,168,0.45)]',
                         )}
                       >
                         <div className="flex items-start justify-between gap-3">
@@ -811,7 +811,7 @@ function LogSheet({
           <button
             aria-label="Close"
             onClick={onClose}
-            className="h-11 w-11 shrink-0 rounded-lg flex items-center justify-center hover:bg-[#1a1f29]"
+            className="h-11 w-11 shrink-0 rounded-lg flex items-center justify-center hover:bg-[var(--color-hover)]"
           >
             <X size={18} />
           </button>
@@ -866,7 +866,7 @@ function LogSheet({
                   onClick={() => setStatus(st)}
                   className={`flex-1 px-3 py-2.5 rounded-lg font-semibold text-sm capitalize ${
                     status === st
-                      ? 'bg-[var(--color-accent)] text-[#2a1f0f]'
+                      ? 'bg-[var(--color-accent)] text-[var(--color-primary-fg)]'
                       : 'bg-[var(--color-background)] border border-[var(--color-card-border)]'
                   }`}
                 >
@@ -884,7 +884,7 @@ function LogSheet({
                 onClick={() => setDisplaySecured(displaySecured === true ? null : true)}
                 className={`px-3 py-4 rounded-xl font-bold text-base border-2 ${
                   displaySecured === true
-                    ? 'bg-[rgba(18,194,140,0.18)] border-[var(--color-success)] text-[var(--color-success)]'
+                    ? 'bg-[rgba(45,212,168,0.18)] border-[var(--color-success)] text-[var(--color-success)]'
                     : 'bg-[var(--color-background)] border-[var(--color-card-border)]'
                 }`}
               >
@@ -895,7 +895,7 @@ function LogSheet({
                 onClick={() => setDisplaySecured(displaySecured === false ? null : false)}
                 className={`px-3 py-4 rounded-xl font-bold text-base border-2 ${
                   displaySecured === false
-                    ? 'bg-[rgba(239,75,75,0.15)] border-[var(--color-danger)] text-[var(--color-danger)]'
+                    ? 'bg-[rgba(229,72,77,0.15)] border-[var(--color-danger)] text-[var(--color-danger)]'
                     : 'bg-[var(--color-background)] border-[var(--color-card-border)]'
                 }`}
               >
@@ -1015,7 +1015,7 @@ function LogSheet({
                     setPhotoB64(null);
                     if (fileRef.current) fileRef.current.value = '';
                   }}
-                  className="h-9 w-9 rounded-lg flex items-center justify-center text-[var(--color-muted)] hover:bg-[#1a1f29]"
+                  className="h-9 w-9 rounded-lg flex items-center justify-center text-[var(--color-muted)] hover:bg-[var(--color-hover)]"
                 >
                   <X size={14} />
                 </button>

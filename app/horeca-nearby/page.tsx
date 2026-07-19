@@ -147,7 +147,7 @@ export default function HorecaNearbyPage() {
                   onClick={() => setRadius(r.km)}
                   className={`change-chip min-h-9 px-3 ${
                     radius === r.km
-                      ? 'bg-[var(--color-accent)] text-[#2a1f0f]'
+                      ? 'bg-[var(--color-accent)] text-[var(--color-primary-fg)]'
                       : 'bg-[var(--color-card)] border border-[var(--color-card-border)]'
                   }`}
                 >

@@ -490,7 +490,7 @@ function HiddenListingsInner() {
 
       {/* How-to-read */}
       {a?.how_to_read && (
-        <div className="m-card flex items-start gap-3 border-[rgba(212,165,116,0.3)] bg-[rgba(212,165,116,0.06)]">
+        <div className="m-card flex items-start gap-3 border-[rgba(216,173,88,0.3)] bg-[rgba(216,173,88,0.06)]">
           <AlertTriangle size={18} className="text-[var(--color-accent)] shrink-0 mt-0.5" />
           <div className="text-xs text-muted">{a.how_to_read}</div>
         </div>
@@ -536,7 +536,7 @@ function StatusBadge({ status }: { status: string }) {
   const map: Record<string, { label: string; cls: string }> = {
     L: { label: 'Listed', cls: 'bg-[rgba(120,200,140,0.10)] text-[var(--color-success)]' },
     D: { label: 'Delisting', cls: 'bg-[rgba(253,203,110,0.10)] text-[var(--color-warning)]' },
-    F: { label: 'Fully Delisted', cls: 'bg-[rgba(239,75,75,0.10)] text-[var(--color-danger)]' },
+    F: { label: 'Fully Delisted', cls: 'bg-[rgba(229,72,77,0.10)] text-[var(--color-danger)]' },
     absent: { label: 'absent', cls: 'bg-[rgba(255,255,255,0.05)] text-muted' },
   };
   const m = map[status] ?? { label: status, cls: 'bg-[rgba(255,255,255,0.05)] text-muted' };

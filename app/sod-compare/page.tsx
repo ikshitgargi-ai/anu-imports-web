@@ -164,7 +164,7 @@ function SodCompareInner() {
       </header>
 
       {/* How-to */}
-      <div className="m-card flex items-start gap-3 border-[rgba(212,165,116,0.3)] bg-[rgba(212,165,116,0.06)]">
+      <div className="m-card flex items-start gap-3 border-[rgba(216,173,88,0.3)] bg-[rgba(216,173,88,0.06)]">
         <AlertTriangle size={18} className="text-[var(--color-accent)] shrink-0 mt-0.5" />
         <div className="text-xs text-muted">
           <strong>How to use this page:</strong>
@@ -274,7 +274,7 @@ function SodCompareInner() {
 
           {/* Date picker — shown after Preview if ZIP has multiple dates */}
           {fromPreview && fromPreview.dates_in_zip.length > 1 && (
-            <div className="rounded-lg border border-[rgba(212,165,116,0.3)] bg-[rgba(212,165,116,0.04)] p-3 space-y-2">
+            <div className="rounded-lg border border-[rgba(216,173,88,0.3)] bg-[rgba(216,173,88,0.04)] p-3 space-y-2">
               <div className="text-xs font-semibold flex items-center gap-2">
                 <AlertTriangle size={12} className="text-[var(--color-accent)]" />
                 ZIP contains {fromPreview.dates_in_zip.length} dates — pick which one to use
@@ -286,7 +286,7 @@ function SodCompareInner() {
                     onClick={() => setFromDatePick(d)}
                     className={`px-2.5 py-1 rounded text-xs font-mono ${
                       fromDatePick === d
-                        ? 'bg-[var(--color-accent)] text-[#2a1f0f] font-semibold'
+                        ? 'bg-[var(--color-accent)] text-[var(--color-primary-fg)] font-semibold'
                         : 'bg-[rgba(255,255,255,0.05)] hover:bg-[rgba(255,255,255,0.1)]'
                     }`}
                   >
@@ -452,7 +452,7 @@ function SodCompareInner() {
                 </div>
                 <button
                   onClick={() => downloadCompareCsv(result)}
-                  className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[var(--color-accent)] text-[#2a1f0f] text-sm font-semibold"
+                  className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[var(--color-accent)] text-[var(--color-primary-fg)] text-sm font-semibold"
                 >
                   <Download size={14} /> Download CSV
                 </button>
@@ -537,9 +537,9 @@ function SodCompareInner() {
                                       <Link
                                         key={`${s.store_number}-${s.discovered_via}`}
                                         href={`/stores/${s.store_number}`}
-                                        className={`text-xs font-mono px-2 py-1 rounded inline-flex items-center gap-1 hover:bg-[var(--color-accent)] hover:text-[#2a1f0f] ${
+                                        className={`text-xs font-mono px-2 py-1 rounded inline-flex items-center gap-1 hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-fg)] ${
                                           s.discovered_via === 'lcbo_only'
-                                            ? 'bg-[rgba(239,75,75,0.12)] text-[var(--color-danger)]'
+                                            ? 'bg-[rgba(229,72,77,0.12)] text-[var(--color-danger)]'
                                             : 'bg-[rgba(255,255,255,0.05)]'
                                         }`}
                                         title={
@@ -569,7 +569,7 @@ function SodCompareInner() {
                                       <Link
                                         key={sn}
                                         href={`/stores/${sn}`}
-                                        className="text-xs font-mono px-2 py-1 rounded bg-[rgba(253,203,110,0.12)] text-[var(--color-warning)] hover:bg-[var(--color-warning)] hover:text-[#2a1f0f]"
+                                        className="text-xs font-mono px-2 py-1 rounded bg-[rgba(253,203,110,0.12)] text-[var(--color-warning)] hover:bg-[var(--color-warning)] hover:text-[var(--color-primary-fg)]"
                                       >
                                         #{sn}
                                       </Link>
@@ -783,7 +783,7 @@ function PortalCatalogCard() {
                             <button
                               onClick={() => importMut.mutate(f.url)}
                               disabled={importing === f.url}
-                              className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[var(--color-accent)] text-[#2a1f0f] hover:opacity-80 disabled:opacity-50"
+                              className="px-2 py-0.5 rounded text-[10px] font-semibold bg-[var(--color-accent)] text-[var(--color-primary-fg)] hover:opacity-80 disabled:opacity-50"
                               title="Download via backend + ingest into sod_inventory"
                             >
                               {importing === f.url ? 'Importing…' : 'Import'}

@@ -46,7 +46,7 @@ export default function NewDistributionPage() {
             onClick={() => setDays(d)}
             className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium min-h-11 ${
               days === d
-                ? 'bg-[var(--color-primary)] text-white'
+                ? 'bg-[var(--color-primary)] text-[var(--color-primary-fg)]'
                 : 'bg-[var(--color-card)] border border-[var(--color-card-border)]'
             }`}
           >

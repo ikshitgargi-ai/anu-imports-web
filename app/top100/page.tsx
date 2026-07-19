@@ -63,7 +63,7 @@ export default function Top100Page() {
             key={l.key}
             onClick={() => setList(l.key)}
             className={`h-10 px-4 rounded-lg text-sm font-medium border ${
-              list === l.key ? 'bg-[var(--color-primary)] text-white border-transparent' : ''
+              list === l.key ? 'bg-[var(--color-primary)] text-[var(--color-primary-fg)] border-transparent' : ''
             }`}
           >
             {l.label}

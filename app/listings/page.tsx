@@ -99,7 +99,7 @@ export default function ListingsPage() {
             onClick={() => setDays(d)}
             className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium min-h-11 ${
               days === d
-                ? 'bg-[var(--color-primary)] text-white'
+                ? 'bg-[var(--color-primary)] text-[var(--color-primary-fg)]'
                 : 'bg-[var(--color-card)] border border-[var(--color-card-border)] text-[var(--color-foreground)]'
             }`}
           >
@@ -110,7 +110,7 @@ export default function ListingsPage() {
           onClick={() => setTrackedOnly((v) => !v)}
           className={`shrink-0 px-4 py-2 rounded-full text-sm font-medium flex items-center gap-1.5 min-h-11 ${
             trackedOnly
-              ? 'bg-[var(--color-accent)] text-[#2a1f0f]'
+              ? 'bg-[var(--color-accent)] text-[var(--color-primary-fg)]'
               : 'bg-[var(--color-card)] border border-[var(--color-card-border)] text-[var(--color-foreground)]'
           }`}
         >
@@ -134,7 +134,7 @@ export default function ListingsPage() {
           <div
             key={i}
             className={`m-card ${
-              c.is_tracked ? 'border-[var(--color-accent)]/40 bg-[rgba(212,165,116,0.04)]' : ''
+              c.is_tracked ? 'border-[var(--color-accent)]/40 bg-[rgba(216,173,88,0.04)]' : ''
             }`}
           >
             <div className="m-card-header">

@@ -81,7 +81,7 @@ export default function ForecastPage() {
               title={FLAG_HELP[f]}
               className={`shrink-0 flex items-center gap-1.5 px-4 py-2.5 rounded-full text-sm font-semibold min-h-11 ${
                 sel
-                  ? 'bg-[var(--color-accent)] text-[#2a1f0f]'
+                  ? 'bg-[var(--color-accent)] text-[var(--color-primary-fg)]'
                   : 'bg-[var(--color-card)] border border-[var(--color-card-border)]'
               }`}
             >

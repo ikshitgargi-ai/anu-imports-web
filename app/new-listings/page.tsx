@@ -4,7 +4,7 @@ import { useState, useMemo } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { TrendingUp, Calendar, RefreshCw, Eye, AlertTriangle, ChevronDown, ChevronUp, Download } from 'lucide-react';
-import { api } from '@/lib/api';
+import { api, API_BASE } from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { formatNumber } from '@/lib/utils';
@@ -132,7 +132,7 @@ export default function NewListingsPage() {
               <button
                 key={p.label}
                 onClick={() => applyPreset(p.days)}
-                className="px-3 py-1.5 rounded text-xs border border-[var(--color-card-border)] hover:bg-[var(--color-accent)] hover:text-[#2a1f0f] transition-colors"
+                className="px-3 py-1.5 rounded text-xs border border-[var(--color-card-border)] hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-fg)] transition-colors"
               >
                 Last {p.label}
               </button>
@@ -235,7 +235,7 @@ export default function NewListingsPage() {
             </Button>
             <a
               href={
-                (process.env.NEXT_PUBLIC_API_BASE_URL ?? '') +
+                API_BASE +
                 `/api/admin/new-listings-by-range?format=csv` +
                 `&start=${start}&end=${end}` +
                 (skuFilter ? `&sku=${skuFilter}` : '') +
@@ -244,7 +244,7 @@ export default function NewListingsPage() {
               }
               target="_blank"
               rel="noopener noreferrer"
-              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[var(--color-accent)] text-[#2a1f0f] text-sm font-semibold"
+              className="inline-flex items-center gap-1.5 h-9 px-3 rounded-lg bg-[var(--color-accent)] text-[var(--color-primary-fg)] text-sm font-semibold"
               title="Each row carries verification evidence — confirmed_new, has_change_event, last_listed_before_window, evidence text"
             >
               <Download size={14} /> Download CSV
@@ -407,11 +407,11 @@ export default function NewListingsPage() {
                                   <Link
                                     key={`${s.store_number}-${s.discovered_via}`}
                                     href={`/stores/${s.store_number}`}
-                                    className={`text-xs font-mono px-2 py-1 rounded inline-flex items-center gap-1 hover:bg-[var(--color-accent)] hover:text-[#2a1f0f] ${
+                                    className={`text-xs font-mono px-2 py-1 rounded inline-flex items-center gap-1 hover:bg-[var(--color-accent)] hover:text-[var(--color-primary-fg)] ${
                                       !s.confirmed_new
                                         ? 'bg-[rgba(255,255,255,0.03)] text-muted line-through opacity-60'
                                         : s.discovered_via === 'lcbo_only'
-                                          ? 'bg-[rgba(239,75,75,0.12)] text-[var(--color-danger)]'
+                                          ? 'bg-[rgba(229,72,77,0.12)] text-[var(--color-danger)]'
                                           : s.discovered_via === 'rep_only'
                                             ? 'bg-[rgba(120,200,140,0.12)] text-[var(--color-success)]'
                                             : s.has_change_event
@@ -438,7 +438,7 @@ export default function NewListingsPage() {
                                       <Link
                                         key={sn}
                                         href={`/stores/${sn}`}
-                                        className="text-xs font-mono px-2 py-1 rounded bg-[rgba(253,203,110,0.12)] text-[var(--color-warning)] hover:bg-[var(--color-warning)] hover:text-[#2a1f0f]"
+                                        className="text-xs font-mono px-2 py-1 rounded bg-[rgba(253,203,110,0.12)] text-[var(--color-warning)] hover:bg-[var(--color-warning)] hover:text-[var(--color-primary-fg)]"
                                       >
                                         #{sn}
                                       </Link>
@@ -466,7 +466,7 @@ export default function NewListingsPage() {
 
       {/* How-to-read */}
       {audit.data?.how_to_read && (
-        <div className="m-card flex items-start gap-3 border-[rgba(212,165,116,0.3)] bg-[rgba(212,165,116,0.06)]">
+        <div className="m-card flex items-start gap-3 border-[rgba(216,173,88,0.3)] bg-[rgba(216,173,88,0.06)]">
           <AlertTriangle size={18} className="text-[var(--color-accent)] shrink-0 mt-0.5" />
           <div className="text-xs text-muted">{audit.data.how_to_read}</div>
         </div>
@@ -479,7 +479,7 @@ export default function NewListingsPage() {
           ● Confirmed new — change event recorded
         </span>
         <span>
-          <span className="inline-block w-3 h-3 rounded bg-[rgba(239,75,75,0.12)] align-middle mr-1" />
+          <span className="inline-block w-3 h-3 rounded bg-[rgba(229,72,77,0.12)] align-middle mr-1" />
           lcbo.com only (commission claim)
         </span>
         <span>

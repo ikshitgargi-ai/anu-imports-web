@@ -4,7 +4,7 @@ import { useState } from 'react';
 import { useQuery } from '@tanstack/react-query';
 import Link from 'next/link';
 import { DollarSign, AlertTriangle, Download, RefreshCw, FileText } from 'lucide-react';
-import { api } from '@/lib/api';
+import { api, API_BASE } from '@/lib/api';
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from '@/components/ui/card';
 import { Button } from '@/components/ui/button';
 import { formatNumber } from '@/lib/utils';
@@ -53,7 +53,7 @@ function CommissionAuditPageInner() {
   const trackedList = tracked.data?.products ?? tracked.data?.rows ?? [];
 
   const csvUrl =
-    process.env.NEXT_PUBLIC_API_BASE_URL +
+    API_BASE +
     `/api/admin/commission-audit?format=csv&days=${days}` +
     (skuFilter ? `&sku=${skuFilter}` : '');
 
@@ -157,7 +157,7 @@ function CommissionAuditPageInner() {
           href={csvUrl}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-[var(--color-accent)] text-[#2a1f0f] text-sm font-semibold"
+          className="inline-flex items-center gap-2 h-10 px-4 rounded-lg bg-[var(--color-accent)] text-[var(--color-primary-fg)] text-sm font-semibold"
         >
           <Download size={14} /> Export CSV (for brand owner)
         </a>
@@ -165,7 +165,7 @@ function CommissionAuditPageInner() {
 
       {/* How to use */}
       {audit.data?.how_to_use && (
-        <div className="m-card flex items-start gap-3 border-[rgba(212,165,116,0.3)] bg-[rgba(212,165,116,0.06)]">
+        <div className="m-card flex items-start gap-3 border-[rgba(216,173,88,0.3)] bg-[rgba(216,173,88,0.06)]">
           <FileText size={18} className="text-[var(--color-accent)] shrink-0 mt-0.5" />
           <div className="text-xs text-[var(--color-muted)]">{audit.data.how_to_use}</div>
         </div>
@@ -296,7 +296,7 @@ function VerdictBadge({
   verdict: 'lcbo_only' | 'sod_only_empty' | 'sod_only_stale' | 'agree';
 }) {
   const map = {
-    lcbo_only: { label: 'CLAIM', cls: 'bg-[rgba(239,75,75,0.12)] text-[var(--color-danger)]' },
+    lcbo_only: { label: 'CLAIM', cls: 'bg-[rgba(229,72,77,0.12)] text-[var(--color-danger)]' },
     sod_only_stale: {
       label: 'STALE?',
       cls: 'bg-[rgba(253,203,110,0.12)] text-[var(--color-warning)]',

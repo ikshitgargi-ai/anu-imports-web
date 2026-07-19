@@ -109,22 +109,22 @@ export default function HomePage() {
       <div className="grid grid-cols-4 gap-2">
         <MiniKpi
           label="Listed"
-          value={brands.data?.brands.reduce((s, b) => s + b.total_listed, 0) ?? '—'}
+          value={brands.data?.brands.reduce((s, b) => s + b.total_listed, 0) ?? '·'}
           color="var(--color-success)"
         />
         <MiniKpi
           label="Delisting"
-          value={brands.data?.brands.reduce((s, b) => s + b.total_delisting, 0) ?? '—'}
+          value={brands.data?.brands.reduce((s, b) => s + b.total_delisting, 0) ?? '·'}
           color="var(--color-warning)"
         />
         <MiniKpi
           label="OOS Risk"
-          value={oos.data?.length ?? '—'}
+          value={oos.data?.length ?? '·'}
           color="var(--color-danger)"
         />
         <MiniKpi
           label="New 60d"
-          value={additions.data?.total ?? '—'}
+          value={additions.data?.total ?? '·'}
           color="var(--color-accent)"
         />
       </div>
@@ -238,7 +238,7 @@ export default function HomePage() {
               <TrendingUp size={14} style={{ color: 'var(--color-success)' }} />
             </div>
             <div className="text-3xl font-bold mt-1.5 tabular-nums" style={{ color: 'var(--color-success)' }}>
-              {additions.data?.total ?? '—'}
+              {additions.data?.total ?? '·'}
             </div>
           </div>
           <div className="m-card">
@@ -272,7 +272,7 @@ export default function HomePage() {
                         )}
                       </div>
                       <div className="font-medium text-sm truncate">
-                        #{a.store_number} · {a.account ?? '—'}
+                        #{a.store_number} · {a.account ?? '·'}
                       </div>
                       <div className="text-xs text-muted truncate">
                         {a.brand} {a.product_name} · {a.city}
@@ -303,14 +303,14 @@ export default function HomePage() {
                       <span
                         className="change-chip"
                         style={{
-                          background: 'rgba(212,165,116,0.18)',
+                          background: 'rgba(216,173,88,0.18)',
                           color: 'var(--color-accent)',
                         }}
                       >
                         +{e.jump} units
                       </span>
                       <div className="font-medium text-sm truncate mt-1">
-                        #{e.store_number} · {e.account ?? '—'}
+                        #{e.store_number} · {e.account ?? '·'}
                       </div>
                       <div className="text-xs text-muted truncate">
                         {e.brand} {e.product_name} · {e.city}
@@ -387,7 +387,7 @@ export default function HomePage() {
                         style={{
                           background:
                             f.priority_score >= 80
-                              ? 'rgba(239,75,75,0.18)'
+                              ? 'rgba(229,72,77,0.18)'
                               : 'rgba(253,203,110,0.18)',
                           color:
                             f.priority_score >= 80
@@ -405,14 +405,14 @@ export default function HomePage() {
                       )}
                     </div>
                     <div className="font-medium text-sm truncate">
-                      #{f.store_number} · {f.account ?? '—'}
+                      #{f.store_number} · {f.account ?? '·'}
                     </div>
                     <div className="text-xs text-muted truncate">
                       {f.brand} {f.product_name} · {f.city}
                     </div>
                   </div>
                   <div className="text-xs text-muted shrink-0 text-right">
-                    {f.days_since_tasting != null ? `${f.days_since_tasting}d ago` : '—'}
+                    {f.days_since_tasting != null ? `${f.days_since_tasting}d ago` : '·'}
                   </div>
                 </div>
               </Link>
@@ -438,14 +438,14 @@ export default function HomePage() {
               <Link
                 key={i}
                 href={`/stores/${d.store_number}`}
-                className="m-card block border-[#a78bfa]/40"
+                className="m-card block border-[var(--color-data)]/40"
               >
                 <div className="flex items-center justify-between gap-2">
                   <div className="flex-1 min-w-0">
                     <div className="flex items-center gap-1.5 flex-wrap mb-1">
                       <span
                         className="change-chip"
-                        style={{ background: 'rgba(167,139,250,0.2)', color: '#a78bfa' }}
+                        style={{ background: 'rgba(64,142,255,0.2)', color: '#408eff' }}
                       >
                         LCBO LIVE
                       </span>
@@ -457,7 +457,7 @@ export default function HomePage() {
                       )}
                     </div>
                     <div className="font-medium text-sm truncate">
-                      #{d.store_number} · {d.account ?? '—'}
+                      #{d.store_number} · {d.account ?? '·'}
                     </div>
                     <div className="text-xs text-muted truncate">
                       {d.brand} {d.product_name} · {d.city}
@@ -536,7 +536,7 @@ export default function HomePage() {
                     #{a.store_number} · {a.account}
                   </Link>
                 ) : (
-                  <span className="text-sm">{a.horeca_name ?? '—'}</span>
+                  <span className="text-sm">{a.horeca_name ?? '·'}</span>
                 )}
                 {a.outcome && <div className="text-xs text-muted mt-1">{a.outcome}</div>}
                 <div className="text-xs text-muted mt-1">by {a.rep || '—'}</div>
@@ -620,19 +620,19 @@ export default function HomePage() {
             href="/ask"
             icon={<Sparkles size={20} />}
             label="Ask AI"
-            color="#a78bfa"
+            color="var(--color-data)"
           />
           <ActionTile
             href="/pipeline"
             icon={<Target size={20} />}
             label="Pipeline"
-            color="#f59e0b"
+            color="var(--color-warning)"
           />
           <ActionTile
             href="/intel"
             icon={<Package size={20} />}
             label="Intel"
-            color="#74b9ff"
+            color="var(--color-data-soft)"
           />
         </div>
       </section>
@@ -641,7 +641,7 @@ export default function HomePage() {
       <button
         onClick={() => setLogSheet(true)}
         aria-label="Log activity"
-        className="fixed bottom-[80px] lg:bottom-6 right-4 z-30 h-14 w-14 rounded-full shadow-lg flex items-center justify-center bg-[var(--color-primary)] text-white"
+        className="fixed bottom-[80px] lg:bottom-6 right-4 z-30 h-14 w-14 rounded-full shadow-lg flex items-center justify-center bg-[var(--color-primary)] text-[var(--color-primary-fg)]"
       >
         <Plus size={26} />
       </button>
@@ -911,7 +911,7 @@ function QuickLogSheet({
             onClick={() => setMode('visit')}
             className={`flex-1 h-11 rounded-lg font-semibold text-sm ${
               mode === 'visit'
-                ? 'bg-[var(--color-primary)] text-white'
+                ? 'bg-[var(--color-primary)] text-[var(--color-primary-fg)]'
                 : 'bg-[var(--color-card)] border border-[var(--color-card-border)]'
             }`}
           >
@@ -921,7 +921,7 @@ function QuickLogSheet({
             onClick={() => setMode('listing')}
             className={`flex-1 h-11 rounded-lg font-semibold text-sm ${
               mode === 'listing'
-                ? 'bg-[var(--color-primary)] text-white'
+                ? 'bg-[var(--color-primary)] text-[var(--color-primary-fg)]'
                 : 'bg-[var(--color-card)] border border-[var(--color-card-border)]'
             }`}
           >

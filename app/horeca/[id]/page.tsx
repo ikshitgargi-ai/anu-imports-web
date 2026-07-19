@@ -90,7 +90,7 @@ export default function HorecaAccountPage({ params }: { params: Promise<{ id: st
         </div>
         <div className="flex gap-2 shrink-0">
           {a.phone && (
-            <a href={`tel:${a.phone.replace(/[^0-9+]/g, '')}`} className="h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium flex items-center gap-2">
+            <a href={`tel:${a.phone.replace(/[^0-9+]/g, '')}`} className="h-11 px-4 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-medium flex items-center gap-2">
               <Phone size={15} /> Call
             </a>
           )}
@@ -143,11 +143,11 @@ export default function HorecaAccountPage({ params }: { params: Promise<{ id: st
             <button
               onClick={() => logOrder.mutate()}
               disabled={!sku || logOrder.isPending}
-              className="w-full h-11 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium disabled:opacity-50"
+              className="w-full h-11 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-medium disabled:opacity-50"
             >
               {logOrder.isPending ? 'Saving…' : 'Save order'}
             </button>
-            {logOrder.isError && <p className="text-xs text-red-600">Could not save. Try again.</p>}
+            {logOrder.isError && <p className="text-xs text-[var(--color-danger)]">Could not save. Try again.</p>}
           </CardContent>
         </Card>
       </div>
@@ -186,7 +186,7 @@ export default function HorecaAccountPage({ params }: { params: Promise<{ id: st
             <button
               onClick={() => logActivity.mutate()}
               disabled={!actNotes || logActivity.isPending}
-              className="h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium disabled:opacity-50"
+              className="h-11 px-4 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-medium disabled:opacity-50"
             >
               Log
             </button>

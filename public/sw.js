@@ -3,7 +3,7 @@
 //
 // On upgrade: bump VERSION to invalidate ALL old caches and force fresh HTML.
 
-const VERSION = 'anu-imports-v1';
+const VERSION = 'anu-imports-v2';
 
 self.addEventListener('install', (e) => {
   // Take over immediately — don't wait for old tabs to close

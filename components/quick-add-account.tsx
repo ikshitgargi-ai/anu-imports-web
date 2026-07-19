@@ -163,12 +163,12 @@ export function QuickAddAccount({ onDone }: { onDone?: () => void }) {
               </select>
             </L>
           </div>
-          {error && <p className="text-sm text-[var(--color-primary)]">{error}</p>}
+          {error && <p className="text-sm text-[var(--color-danger)]">{error}</p>}
           <div className="flex gap-2">
             <button
               onClick={submit}
               disabled={saving}
-              className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-white text-sm font-medium disabled:opacity-60"
+              className="flex items-center gap-2 h-11 px-4 rounded-lg bg-[var(--color-primary)] text-[var(--color-primary-fg)] text-sm font-medium disabled:opacity-60"
             >
               {saving ? <Loader2 size={15} className="animate-spin" /> : <Plus size={15} />}
               Create account

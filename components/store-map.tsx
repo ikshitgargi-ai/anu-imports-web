@@ -1,5 +1,10 @@
 'use client';
 
+// Bundled from the package, not a CDN: our CSP is style-src 'self',
+// so the unpkg stylesheet this used to inject was blocked and the map
+// rendered as a blank box in production.
+import 'leaflet/dist/leaflet.css';
+
 import { useEffect, useRef } from 'react';
 import type { Store } from '@/lib/api';
 
@@ -21,14 +26,6 @@ export default function StoreMap({
     let cancelled = false;
     (async () => {
       const L = (await import('leaflet')).default;
-      // Leaflet CSS
-      if (!document.querySelector('link[data-leaflet-css]')) {
-        const link = document.createElement('link');
-        link.rel = 'stylesheet';
-        link.href = 'https://unpkg.com/leaflet@1.9.4/dist/leaflet.css';
-        link.setAttribute('data-leaflet-css', 'true');
-        document.head.appendChild(link);
-      }
       if (cancelled || !containerRef.current) return;
       if (!mapRef.current) {
         mapRef.current = L.map(containerRef.current, {

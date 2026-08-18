@@ -217,6 +217,9 @@ export default function StorePage({
         </CardContent>
       </Card>
 
+      {/* Walk-in brief: stock + the angle to lead with, ready before you enter */}
+      <WalkInBrief n={n} />
+
       <FreshnessBanner />
 
       {/* Rep Coach v0 — 3 bullets: what to pitch here this week */}
@@ -871,5 +874,51 @@ function ContactCard({
         </button>
       </div>
     </div>
+  );
+}
+
+
+function WalkInBrief({ n }: { n: number }) {
+  const brief = useQuery({ queryKey: ['store-brief', n], queryFn: () => api.storeBrief(n) });
+  const b = brief.data;
+  if (!b || b.error) return null;
+  const flagColor = (f: string) =>
+    f === 'GAP' || f === 'NOT LISTED' ? '#16876a'
+    : f === 'OUT' ? '#b00020'
+    : f === 'LOW' ? '#b8860b'
+    : '#1a1a3a';
+  return (
+    <Card>
+      <CardHeader className="pb-2">
+        <CardTitle className="text-base">Before you walk in</CardTitle>
+        <CardDescription>{b.lead_with}</CardDescription>
+      </CardHeader>
+      <CardContent className="pt-0">
+        <div className="grid grid-cols-2 sm:grid-cols-3 gap-2">
+          {b.skus.map((x) => (
+            <div key={x.sku} className="rounded-lg border border-[var(--color-card-border)] p-2">
+              <div className="text-sm font-semibold truncate">{x.brand}</div>
+              <div className="flex items-center justify-between mt-1">
+                <span className="text-xs text-[var(--color-muted)]">
+                  {x.status === 'listed' ? `${x.on_hand} on hand` : x.status.replace('_', ' ')}
+                </span>
+                <span className="text-[10px] font-bold px-1.5 py-0.5 rounded text-white"
+                  style={{ background: flagColor(x.flag) }}>{x.flag}</span>
+              </div>
+            </div>
+          ))}
+        </div>
+        {b.last_visit && (
+          <div className="text-xs text-[var(--color-muted)] mt-2">
+            Last visit: {b.last_visit.activity_type} by {b.last_visit.rep || '—'}
+            {b.last_visit.outcome ? ` · ${b.last_visit.outcome}` : ''}
+            {b.last_visit.created_at ? ` · ${b.last_visit.created_at.slice(0, 10)}` : ''}
+          </div>
+        )}
+        {b.snapshot_date && (
+          <div className="text-[10px] text-[var(--color-muted)] mt-1">Stock as of {b.snapshot_date}</div>
+        )}
+      </CardContent>
+    </Card>
   );
 }

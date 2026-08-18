@@ -52,6 +52,7 @@ const NAV = [
   { href: '/territory-plan', label: '14-Day Territory Plan', icon: Calendar },
   { href: '/daily-log', label: 'Daily Log', icon: Activity },
   { href: '/rep-performance', label: 'Rep Performance', icon: Trophy },
+  { href: '/day-route', label: 'Plan My Day (route)', icon: Navigation },
   { href: '/route-planner', label: 'Route Planner', icon: Navigation },
   { href: '/forecast', label: 'Stockout Forecast', icon: TrendingUp },
   { href: '/log', label: 'Log Visit', icon: Plus },

@@ -761,6 +761,22 @@ export const api = {
 
   // ===== Route planner =====
   cities: () => request<{ city: string; store_count: number }[]>('/api/crm/cities'),
+  // ===== Day Route Optimizer + Walk-in Brief + Geocoding =====
+  dayRoutePlan: (body: {
+    origin_lat?: number; origin_lng?: number; origin_address?: string;
+    dest_city: string; include_horeca?: boolean; round_trip?: boolean;
+    max_stops?: number; day_hours?: number; dwell_min?: number;
+    corridor_km?: number; dest_radius_km?: number; max_horeca?: number;
+  }) => request<DayRoutePayload>('/api/route/plan', {
+    method: 'POST', body: JSON.stringify(body),
+  }),
+  storeBrief: (storeNumber: number | string) =>
+    request<StoreBriefPayload>(`/api/store/${storeNumber}/brief`),
+  geoStatus: () => request<GeoStatusPayload>('/api/geo/status'),
+  geoBackfill: () => request<{ status: string }>('/api/geo/backfill', {
+    method: 'POST', body: JSON.stringify({}),
+  }),
+
   routePlanner: (params: {
     city?: string;
     district?: string;
@@ -3490,4 +3506,79 @@ export interface RebalancePayload {
   slow_heavy: VelocityRow[];
   fast_low: VelocityRow[];
   play: string;
+}
+
+
+// ===== Day Route Optimizer types =====
+export interface DayRouteStop {
+  store_number: number;
+  account: string;
+  address: string;
+  city: string;
+  lat: number;
+  lng: number;
+  seq: number;
+  detour_km: number;
+  leg_km: number;
+  cumulative_km: number;
+  cumulative_drive_min: number;
+  gap: boolean;
+  low_stock: boolean;
+  priority_score: number;
+  why: string;
+}
+export interface DayRouteHoreca {
+  id: number;
+  name: string;
+  account_type: string;
+  address: string;
+  city: string;
+  lat: number;
+  lng: number;
+  status: string;
+  phone: string;
+  contact_name: string;
+  detour_km: number;
+}
+export interface DayRoutePayload {
+  origin: { lat: number; lng: number; label: string };
+  destination: { lat: number; lng: number; city: string };
+  matrix_source: string;
+  round_trip: boolean;
+  day_feasible: boolean;
+  advice: string;
+  stops: DayRouteStop[];
+  stop_count: number;
+  dropped_for_time: number;
+  candidates_considered: number;
+  horeca_stops: DayRouteHoreca[];
+  totals: {
+    drive_km: number; drive_min: number; total_min: number; total_hours: number;
+    litres: number; cost: number; l_per_100km: number; price_per_l: number;
+  };
+  params: Record<string, number>;
+  how_to_read: string;
+  error?: string;
+}
+export interface BriefSku {
+  sku: string; brand: string; product: string;
+  on_hand: number; status: string; flag: string;
+}
+export interface StoreBriefPayload {
+  store: {
+    store_number: number; account: string; address: string; city: string;
+    postal: string; phone: string; manager_name: string; rep: string;
+    lat: number; lng: number;
+  };
+  snapshot_date: string | null;
+  skus: BriefSku[];
+  summary: { listed: number; gaps: number; low_or_out: number };
+  last_visit: { created_at: string; activity_type: string; rep: string;
+                outcome: string; notes: string } | null;
+  lead_with: string;
+  error?: string;
+}
+export interface GeoStatusPayload {
+  job: { running: boolean; done: number; total: number; started: string | null };
+  coverage: { total: number; precise: number; ungeocoded: number };
 }

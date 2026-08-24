@@ -2201,6 +2201,9 @@ export interface FinderStore {
   last_activity_rep: string;
   last_activity_notes: string;
   total_activities: number;
+  our_skus_listed: number;
+  our_on_hand: number;
+  carries_us: boolean;
   total_deals: number;
   open_deals: number;
 }

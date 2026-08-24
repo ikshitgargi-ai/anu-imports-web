@@ -245,6 +245,17 @@ function StoreRow({ s }: { s: FinderStore }) {
               {s.open_deals} open
             </span>
           )}
+          {/* Our shelf position: units on hand, not just listed/not */}
+          {s.carries_us ? (
+            <span className="text-[10px] px-1.5 py-0.5 rounded font-semibold text-white"
+              style={{ background: s.our_on_hand === 0 ? '#b00020' : s.our_on_hand <= 3 ? '#b8860b' : '#16876a' }}>
+              {s.our_skus_listed} SKU{s.our_skus_listed === 1 ? '' : 's'} · {s.our_on_hand}u{s.our_on_hand === 0 ? ' OUT' : s.our_on_hand <= 3 ? ' LOW' : ''}
+            </span>
+          ) : (
+            <span className="text-[10px] px-1.5 py-0.5 rounded bg-[rgba(22,135,106,0.15)] text-[#16876a] font-semibold">
+              GAP
+            </span>
+          )}
         </div>
         {s.address && (
           <div className="text-xs text-[var(--color-muted)] flex items-start gap-1 mt-1">
